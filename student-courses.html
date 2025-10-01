@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลส่วนตัวนักศึกษา - Student Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: #666;
+            margin: 0;
+        }
+        
+        /* Student Profile Card */
+        .student-profile-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #6f42c1;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6f42c1, #5a359a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .profile-info h2 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 1.8em;
+        }
+        
+        .student-id {
+            color: #666;
+            margin: 5px 0 10px 0;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-item .label {
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .detail-item .value {
+            color: #333;
+            text-align: right;
+        }
+        
+        /* Academic Section */
+        .academic-section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .academic-section h3 {
+            color: #6f42c1;
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #6f42c1, #5a359a);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        /* Project Section */
+        .project-section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .project-section h3 {
+            color: #6f42c1;
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+        
+        .project-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .project-header h4 {
+            margin: 0;
+            color: #333;
+            font-size: 1.3em;
+        }
+        
+        .progress-badge {
+            background: #fff3cd;
+            color: #856404;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .project-details p {
+            margin: 8px 0;
+            color: #555;
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn.primary {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        .action-btn.primary:hover {
+            background: #5a359a;
+        }
+        
+        .action-btn.secondary {
+            background: #f8f9fa;
+            color: #6f42c1;
+            border: 2px solid #6f42c1;
+        }
+        
+        .action-btn.secondary:hover {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .quick-actions h3 {
+            color: #6f42c1;
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .action-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .action-card:hover {
+            background: #6f42c1;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
+        }
+        
+        .action-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .action-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .action-card:hover .action-title,
+        .action-card:hover .action-desc {
+            color: white;
+        }
+        
+        .action-desc {
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+        
+        /* Navigation responsive adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                margin: 15px auto;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 10px;
+                width: calc(100% - 20px);
+            }
+            
+            .page-header h1 {
+                font-size: 1.8em;
+            }
+            
+            .page-header p {
+                font-size: 0.9em;
+            }
+            
+            .student-profile-card,
+            .academic-section,
+            .project-section,
+            .quick-actions {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+                border-radius: 12px;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .profile-avatar {
+                margin-bottom: 10px;
+            }
+            
+            .profile-info h2 {
+                font-size: 1.5em;
+                margin-bottom: 8px;
+            }
+            
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+                padding: 8px 0;
+            }
+            
+            .detail-item .value {
+                text-align: left;
+                margin-top: 5px;
+                font-weight: 500;
+            }
+            
+            .progress-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-number {
+                font-size: 2em;
+            }
+            
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .action-card {
+                padding: 20px 15px;
+            }
+            
+            .action-icon {
+                font-size: 2em;
+            }
+            
+            .project-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .project-header h4 {
+                font-size: 1.2em;
+            }
+            
+            .project-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .action-btn {
+                text-align: center;
+                padding: 12px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                padding: 5px;
+                width: calc(100% - 10px);
+            }
+            
+            .page-header {
+                margin-bottom: 20px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5em;
+                margin-bottom: 5px;
+            }
+            
+            .page-header p {
+                font-size: 0.8em;
+            }
+            
+            .student-profile-card,
+            .academic-section,
+            .project-section,
+            .quick-actions {
+                padding: 15px 10px;
+                margin-bottom: 15px;
+                border-radius: 10px;
+            }
+            
+            .profile-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5em;
+            }
+            
+            .profile-info h2 {
+                font-size: 1.3em;
+            }
+            
+            .student-id {
+                font-size: 0.9em;
+            }
+            
+            .status-badge {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+            
+            .detail-item {
+                padding: 6px 0;
+            }
+            
+            .detail-item .label {
+                font-size: 0.9em;
+            }
+            
+            .detail-item .value {
+                font-size: 0.9em;
+            }
+            
+            .progress-stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .stat-card {
+                padding: 12px;
+            }
+            
+            .stat-number {
+                font-size: 1.8em;
+            }
+            
+            .stat-label {
+                font-size: 0.8em;
+            }
+            
+            .academic-section h3,
+            .project-section h3,
+            .quick-actions h3 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+            
+            .project-card {
+                padding: 15px;
+            }
+            
+            .project-header h4 {
+                font-size: 1.1em;
+                line-height: 1.3;
+            }
+            
+            .progress-badge {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            .project-details p {
+                font-size: 0.9em;
+                margin: 6px 0;
+            }
+            
+            .action-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .action-card {
+                padding: 15px 10px;
+            }
+            
+            .action-icon {
+                font-size: 1.8em;
+                margin-bottom: 8px;
+            }
+            
+            .action-title {
+                font-size: 1em;
+                margin-bottom: 3px;
+            }
+            
+            .action-desc {
+                font-size: 0.8em;
+            }
+            
+            .action-btn {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                margin: 3px;
+                padding: 3px;
+                width: calc(100% - 6px);
+            }
+            
+            .student-profile-card,
+            .academic-section,
+            .project-section,
+            .quick-actions {
+                padding: 12px 8px;
+                margin-bottom: 12px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.3em;
+            }
+            
+            .profile-info h2 {
+                font-size: 1.2em;
+            }
+            
+            .detail-item .label,
+            .detail-item .value {
+                font-size: 0.8em;
+            }
+            
+            .project-details p {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+       <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="fitm.png" alt="kmutnb logo" style="width:80px;height:50px;vertical-align:middle;">
+               
+            </div>
+            
+            <div class="nav-menu">
+                <a href="student-dashboard.html" class="nav-link">
+                    <span class="nav-icon">👤</span>
+                    แบบฟอร์มการนำเสนอโครงงาน
+                </a>
+                <a href="student-courses.html" class="nav-link active">
+                    <span class="nav-icon">📚</span>
+                    ข้อมูลนักศึกษา
+                </a>
+               
+                <a href="project-progress.html" class="nav-link">
+                    <span class="nav-icon">📈</span>
+                    รายงานความก้าวหน้า
+                </a>
+                <a href="project-exam.html" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    ยื่นสอบโปรเจค
+                </a>
+                  <a href="BookanAppointment.html" class="nav-link">
+                    <span class="nav-icon">📆</span>
+                    กำหนดการสอบโปรเจค
+                </a>
+                <a href="project-upload.html" class="nav-link">
+                    <span class="nav-icon">📁</span>
+                    อัพโหลดเอกสาร
+                </a>
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name">นักศึกษา</span>
+                    
+                </div>
+                <a href="index.html" class="nav-logout">
+                    <span class="nav-icon">🚪</span>
+                    ออกจากระบบ
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>ข้อมูลส่วนตัวนักศึกษา</h1>
+            <p>แสดงข้อมูลส่วนตัวและรายละเอียดการศึกษา</p>
+        </div>
+
+        <!-- Student Profile Card -->
+        <div class="student-profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">M</div>
+                <div class="profile-info">
+                    <h2>นายสมชาย ใจดี</h2>
+                    <p class="student-id">รหัสนักศึกษา: 65010001</p>
+                    <span class="status-badge active">กำลังศึกษา</span>
+                </div>
+            </div>
+            
+            <div class="profile-details">
+                <div class="detail-row">
+                    <div class="detail-item">
+                        <span class="label">สาขาวิชา:</span>
+                        <span class="value">วิศวกรรมสารสนเทศและเครือข่าย(เทียบโอน)</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">ชั้นปี:</span>
+                        <span class="value">3</span>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-item">
+                        <span class="label">วันที่สมัครเรียน:</span>
+                        <span class="value">15 สิงหาคม 2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">ปีการศึกษา:</span>
+                        <span class="value">2568</span>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-item">
+                        <span class="label">เบอร์โทรศัพท์:</span>
+                        <span class="value">089-123-4567</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">อีเมล:</span>
+                        <span class="value">matt.d@email.kmutnb.ac.th</span>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-item">
+                        <span class="label">อาจารย์ที่ปรึกษา:</span>
+                        <span class="value">ผศ ดร.สุพาภรณ์  ซิ้มเจริญ</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">GPA รวม:</span>
+                        <span class="value">3.75</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Progress -->
+        <div class="academic-section">
+            <h3>ความก้าวหน้าทางการศึกษา</h3>
+            <div class="progress-stats">
+                <div class="stat-card">
+                    <div class="stat-number">132</div>
+                    <div class="stat-label">หน่วยกิตที่ผ่าน</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">หน่วยกิตลงทะเบียน</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">รายวิชาในเทอมนี้</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3.75</div>
+                    <div class="stat-label">เกรดเฉลี่ยรวม</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Project -->
+        <div class="project-section">
+            <h3>โปรเจคปัจจุบัน</h3>
+            <div class="project-card">
+                <div class="project-header">
+                    <h4>ระบบจัดการข้อมูลนักศึกษาออนไลน์</h4>
+                    <span class="progress-badge">75% เสร็จสิ้น</span>
+                </div>
+                <div class="project-details">
+                    <p><strong>ประเภท:</strong> การพัฒนาเว็บแอปพลิเคชั่น</p>
+                    <p><strong>เทคโนโลยี:</strong> HTML, CSS, JavaScript, PHP, MySQL</p>
+                    <p><strong>วันที่เริ่มโปรเจค:</strong> 1 กันยายน 2024</p>
+                    <p><strong>กำหนดส่ง:</strong> 15 ธันวาคม 2024</p>
+                </div>
+                <div class="project-actions">
+                    <a href="project-progress.html" class="action-btn primary">รายงานความก้าวหน้า</a>
+                    <a href="project-upload.html" class="action-btn secondary">อัปโหลดเอกสาร</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3>การจัดการด่วน</h3>
+            <div class="action-grid">
+                <a href="project-exam.html" class="action-card">
+                    <span class="action-icon">�</span>
+                    <span class="action-title">ยื่นสอบโปรเจค</span>
+                    <span class="action-desc">จองสอบและยื่นเอกสาร</span>
+                </a>
+                <a href="#" class="action-card">
+                    <span class="action-icon">📊</span>
+                    <span class="action-title">ดูเกรด</span>
+                    <span class="action-desc">ตรวจสอบผลการเรียน</span>
+                </a>
+                <a href="project-upload.html" class="action-card">
+                    <span class="action-icon">📁</span>
+                    <span class="action-title">อัปโหลดไฟล์</span>
+                    <span class="action-desc">ส่งเอกสารและงาน</span>
+                </a>
+                <a href="#" class="action-card">
+                    <span class="action-icon">💬</span>
+                    <span class="action-title">ติดต่ออาจารย์</span>
+                    <span class="action-desc">สื่อสารกับอาจารย์ที่ปรึกษา</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="navigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายงานความก้าวหน้าโปรเจค - Student Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            color: #333;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow-x: hidden;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .user-role {
+            background-color: #6f42c1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Table Controls */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .entries-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .entries-control select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .entries-control select:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.1);
+        }
+        
+        .search-control input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 250px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: white;
+        }
+        
+        .search-control input:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.1);
+        }
+        
+        .search-control input::placeholder {
+            color: #999;
+        }
+        
+        /* Table Container for Horizontal Scrolling */
+        .data-table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .data-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Enhanced Submit Button */
+        .submit-btn {
+            background: linear-gradient(135deg, #6f42c1 0%, #9c27b0 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(111, 66, 193, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                margin: 15px;
+                padding: 20px;
+                border-radius: 8px;
+            }
+            
+            .page-header {
+                margin-bottom: 25px;
+            }
+            
+            .search-control input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 6px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .search-control input {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .entries-control {
+                justify-content: flex-start;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .pagination button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            
+            .form-title {
+                font-size: 18px;
+                margin-bottom: 20px;
+                padding: 15px;
+            }
+            
+            .form-group input {
+                max-width: none;
+            }
+            
+            .file-upload-area {
+                padding: 30px 15px;
+            }
+            
+            .upload-icon {
+                font-size: 36px;
+            }
+            
+            .file-types {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                padding: 12px;
+                border-radius: 4px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+            }
+            
+            .user-role {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .table-controls {
+                gap: 12px;
+            }
+            
+            .entries-control {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .entries-control span {
+                font-size: 14px;
+            }
+            
+            .entries-control select {
+                padding: 8px 12px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 120px;
+            }
+            
+            .search-control input {
+                padding: 10px 15px;
+                border-radius: 25px;
+            }
+            
+            .data-table {
+                min-width: 600px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+                font-size: 11px;
+            }
+            
+            .checkbox-col {
+                width: 40px;
+            }
+            
+            .icon-col {
+                width: 50px;
+            }
+            
+            .project-icon {
+                width: 24px;
+                height: 24px;
+            }
+            
+            .status-badge {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+            
+            .pagination {
+                gap: 6px;
+            }
+            
+            .pagination button {
+                padding: 8px;
+                font-size: 12px;
+                min-width: 36px;
+            }
+            
+            .form-title {
+                font-size: 16px;
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-group label {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+            
+            .form-group input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+            
+            .file-upload-area {
+                padding: 25px 12px;
+            }
+            
+            .upload-text {
+                font-size: 13px;
+            }
+            
+            .file-types {
+                gap: 6px;
+            }
+            
+            .file-type-badge {
+                padding: 3px 6px;
+                font-size: 11px;
+            }
+            
+            .file-item {
+                padding: 8px 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .file-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .file-name {
+                font-size: 13px;
+            }
+            
+            .file-status {
+                font-size: 11px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                padding: 14px 20px;
+                font-size: 16px;
+                margin-top: 25px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                margin: 2px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 16px;
+                line-height: 1.3;
+            }
+            
+            .data-table {
+                min-width: 500px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 6px 4px;
+                font-size: 10px;
+            }
+            
+            .entries-control select {
+                max-width: 100px;
+                font-size: 14px;
+            }
+            
+            .search-control input {
+                padding: 8px 12px;
+            }
+            
+            .pagination button {
+                padding: 6px;
+                min-width: 32px;
+                font-size: 11px;
+            }
+            
+            .form-title {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .upload-icon {
+                font-size: 32px;
+            }
+            
+            .upload-text {
+                font-size: 12px;
+            }
+            
+            .file-type-badge {
+                font-size: 10px;
+                padding: 2px 4px;
+            }
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .data-table th.sortable {
+            cursor: pointer;
+        }
+        
+        .data-table th.sortable::after {
+            content: '↕';
+            position: absolute;
+            right: 8px;
+            color: #6c757d;
+            font-size: 12px;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .data-table td {
+            font-size: 14px;
+        }
+        
+        /* Checkbox column */
+        .checkbox-col {
+            width: 50px;
+            text-align: center;
+        }
+        
+        .checkbox-col input[type="checkbox"] {
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        
+        /* Icon column */
+        .icon-col {
+            width: 60px;
+            text-align: center;
+        }
+        
+        .project-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #28a745;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+        
+        /* Status badges */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: #6c757d;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background-color: #f8f9fa;
+        }
+        
+        .pagination button.active {
+            background-color: #6f42c1;
+            color: white;
+            border-color: #6f42c1;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Progress Report Form */
+        .progress-form-section {
+            border-top: 2px solid #e9ecef;
+            padding-top: 40px;
+        }
+        
+        .form-title {
+            font-size: 20px;
+            color: #495057;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #495057;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: white;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+        }
+        
+        /* File Upload Area */
+        .file-upload-section {
+            margin-top: 30px;
+        }
+        
+        .file-upload-label {
+            display: block;
+            margin-bottom: 15px;
+            color: #495057;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #d0d7de;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #6f42c1;
+            background-color: #f5f3ff;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .file-types {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .file-type-badge {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .file-size-limit {
+            color: #6c757d;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        /* Uploaded Files List */
+        .uploaded-files {
+            margin-top: 20px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-name {
+            color: #0066cc;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+        
+        .file-status {
+            color: #28a745;
+            font-size: 12px;
+        }
+        
+        .file-status-icon {
+            color: #28a745;
+            font-size: 16px;
+        }
+
+        /* CSS Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Apply Animations */
+        .container {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .data-table tbody tr {
+            animation: fadeInLeft 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            animation: fadeInRight 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .data-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        .data-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        .data-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        .data-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        .data-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+        .form-group {
+            animation: fadeInLeft 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.2s; }
+        .form-group:nth-child(2) { animation-delay: 0.3s; }
+        .form-group:nth-child(3) { animation-delay: 0.4s; }
+
+        .file-upload-section {
+            animation: fadeInRight 0.6s ease-out;
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        /* Enhanced Hover Effects */
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-item:hover {
+            transform: translateX(5px);
+            transition: all 0.3s ease;
+            background-color: #e9ecef;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: #6f42c1;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
+            transition: transform 0.2s ease;
+        }
+
+        .project-icon:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="fitm.png" alt="kmutnb logo" style="width:80px;height:50px;vertical-align:middle;">
+               
+            </div>
+            
+            <div class="nav-menu">
+                <a href="student-dashboard.html" class="nav-link">
+                    <span class="nav-icon">👤</span>
+                    แบบฟอร์มการนำเสนอโครงงาน
+                </a>
+                <a href="student-courses.html" class="nav-link">
+                    <span class="nav-icon">📚</span>
+                    ข้อมูลนักศึกษา
+                </a>
+               
+                <a href="project-progress.html" class="nav-link">
+                    <span class="nav-icon">📈</span>
+                    รายงานความก้าวหน้า
+                </a>
+                <a href="project-exam.html" class="nav-link active">
+                    <span class="nav-icon">📋</span>
+                    ยื่นสอบโปรเจค
+                </a>
+                  <a href="BookanAppointment.html" class="nav-link">
+                    <span class="nav-icon">📆</span>
+                    กำหนดการสอบโปรเจค
+                </a>
+                <a href="project-upload.html" class="nav-link">
+                    <span class="nav-icon">📁</span>
+                    อัพโหลดเอกสาร
+                </a>
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name">นักศึกษา</span>
+                 
+                </div>
+                <a href="index.html" class="nav-logout">
+                    <span class="nav-icon">🚪</span>
+                    ออกจากระบบ
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">รายงานความก้าวหน้าในโปรเจค</h1>
+      
+        </div>
+        
+        <!-- Table Controls -->
+        <div class="table-controls">
+            <div class="entries-control">
+                <span>Show</span>
+                <select>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span>entries</span>
+            </div>
+            
+            <div class="search-control">
+                <input type="text" placeholder="Search...">
+            </div>
+        </div>
+        
+        <!-- Data Table -->
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-col">เลือก</th>
+                        <th>รูปโลโก้</th>
+                        <th class="sortable">ลำดับที่</th>
+                        <th class="sortable">เปอร์เซ็นต์</th>
+                        <th class="sortable">วันที่สร้าง</th>
+                        <th>ประเภทโครงงาน</th>
+                        <th>ไฟล์แนบนาม</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="checkbox-col">
+                            <input type="checkbox">
+                        </td>
+                        <td class="icon-col">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FF6B6B' rx='6'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'%3EH%3C/text%3E%3C/svg%3E" alt="Hat" class="project-icon">
+                        </td>
+                        <td>Hat</td>
+                        <td>1</td>
+                        <td>0%</td>
+                        <td>13/05/2022</td>
+                        <td><span class="status-badge status-active">สหกิจ</span></td>
+                        <td>test.pdf</td>
+                    </tr>
+                    <tr>
+                        <td class="checkbox-col">
+                            <input type="checkbox">
+                        </td>
+                        <td class="icon-col">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%234ECDC4' rx='6'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='14' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E" alt="Laptop" class="project-icon">
+                        </td>
+                        <td>Laptop</td>
+                        <td>2</td>
+                        <td>60%</td>
+                        <td>22/05/2022</td>
+                        <td><span class="status-badge status-pending">พิเศษ</span></td>
+                        <td>test.pdf</td>
+                    </tr>
+                    <tr>
+                        <td class="checkbox-col">
+                            <input type="checkbox">
+                        </td>
+                        <td class="icon-col">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%239B59B6' rx='6'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='14' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" alt="Phone" class="project-icon">
+                        </td>
+                        <td>Phone</td>
+                        <td>3</td>
+                        <td>100%</td>
+                        <td>15/06/2022</td>
+                        <td><span class="status-badge status-pending">พิเศษ</span></td>
+                        <td>test.pdf</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+            <button disabled>Previous</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>Next</button>
+        </div>
+        
+        <!-- Progress Report Form -->
+        <div class="progress-form-section">
+            <div class="form-title" style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 8px; margin-bottom: 30px;">
+                ฟอร์มยื่นความคืบหน้าของผลงาน 100%ในงานการสอบนำเสนอ #
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label for="exam-date">วันที่สอบ</label>
+                    <input type="date" id="exam-date" name="exam-date" placeholder="//0/0/1" value="//0/0/1">
+                </div>
+                
+                <!-- File Upload Section -->
+                <div class="file-upload-section">
+                    <label class="file-upload-label">ยื่นไฟล์เอกสาร และ ไฟล์รายละเอียดงาน</label>
+                    
+                    <div class="file-upload-area" onclick="document.getElementById('file-input').click();">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Click to upload</div>
+                        
+                        <div class="file-types">
+                            <span class="file-type-badge">PDF</span>
+                            <span class="file-type-badge">DOCX</span>
+                            <span class="file-type-badge">TXT</span>
+                            <span class="file-type-badge">1-10 MB</span>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="file-input" style="display: none;" multiple accept=".pdf,.docx,.txt">
+                    
+                    <!-- Uploaded Files List -->
+                    <div class="uploaded-files">
+                        <div class="file-item">
+                            <div class="file-info">
+                                <span class="file-name">phoenix-document.pdf</span>
+                                <span class="file-status">Upload complete</span>
+                            </div>
+                            <span class="file-status-icon">✓</span>
+                        </div>
+                        
+                        <div class="file-item">
+                            <div class="file-info">
+                                <span class="file-name">yunn.docx</span>
+                                <span class="file-status">Upload complete</span>
+                            </div>
+                            <span class="file-status-icon">✓</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">ยื่นสอบ</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // File upload functionality
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const uploadedFiles = document.querySelector('.uploaded-files');
+            
+            for (let file of files) {
+                // Create new file item
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-status">Upload complete</span>
+                    </div>
+                    <span class="file-status-icon">✓</span>
+                `;
+                uploadedFiles.appendChild(fileItem);
+            }
+        });
+
+        // Table sorting functionality
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', function() {
+                // Add sorting logic here
+                console.log('Sorting by:', this.textContent);
+            });
+        });
+    </script>
+    
+    <!-- JavaScript Files -->
+    <script src="navigation.js"></script>
+</body>
+</html>

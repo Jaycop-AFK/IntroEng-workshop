@@ -1,0 +1,492 @@
+/* Global Responsive Styles for KMUTNB Student Management System */
+/* ระบบ Responsive ร่วมกันสำหรับทุกหน้า */
+
+/* Import IBM Plex Sans Thai Font */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap');
+
+/* Root Variables */
+:root {
+    --primary-color: #F15A24;
+    --primary-dark: #E14A1C;
+    --student-primary: #9370DB;
+    --student-dark: #6A0DAD;
+    --white: #ffffff;
+    --gray-light: #f5f7fa;
+    --gray-medium: #e0e0e0;
+    --gray-dark: #333;
+    --shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* Base Responsive Typography */
+html {
+    font-size: 16px; /* Base font size */
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 15px; }
+}
+
+@media (max-width: 992px) {
+    html { font-size: 14px; }
+}
+
+@media (max-width: 768px) {
+    html { font-size: 13px; }
+}
+
+@media (max-width: 576px) {
+    html { font-size: 12px; }
+}
+
+/* Container Responsive */
+.main-container,
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+@media (max-width: 1200px) {
+    .main-container,
+    .container {
+        max-width: 1140px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-container,
+    .container {
+        max-width: 960px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container,
+    .container {
+        max-width: 720px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-container,
+    .container {
+        max-width: 540px;
+        padding: 8px;
+    }
+}
+
+/* Grid System */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+}
+
+.col {
+    flex: 1;
+    padding: 10px;
+}
+
+.col-1 { flex: 0 0 8.333333%; }
+.col-2 { flex: 0 0 16.666667%; }
+.col-3 { flex: 0 0 25%; }
+.col-4 { flex: 0 0 33.333333%; }
+.col-6 { flex: 0 0 50%; }
+.col-8 { flex: 0 0 66.666667%; }
+.col-9 { flex: 0 0 75%; }
+.col-12 { flex: 0 0 100%; }
+
+@media (max-width: 768px) {
+    .col-md-12 { flex: 0 0 100%; }
+    .col-md-6 { flex: 0 0 50%; }
+    .col-md-4 { flex: 0 0 33.333333%; }
+    .col-md-3 { flex: 0 0 25%; }
+}
+
+@media (max-width: 576px) {
+    .col-sm-12 { flex: 0 0 100%; }
+    .col,
+    [class*="col-"] {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Form Responsive */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--gray-medium);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+@media (max-width: 576px) {
+    input,
+    select,
+    textarea {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Button Responsive */
+.btn,
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+@media (max-width: 576px) {
+    .btn,
+    button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Table Responsive */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Minimum width for tables */
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 0.85rem;
+        min-width: 500px;
+    }
+    
+    th,
+    td {
+        padding: 8px 6px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    table {
+        font-size: 0.8rem;
+        min-width: 450px;
+    }
+    
+    th,
+    td {
+        padding: 6px 4px !important;
+    }
+}
+
+/* Card Responsive */
+.card,
+.section,
+.results-section,
+.search-section,
+.page-header {
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+@media (max-width: 768px) {
+    .card,
+    .section,
+    .results-section,
+    .search-section,
+    .page-header {
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .card,
+    .section,
+    .results-section,
+    .search-section,
+    .page-header {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+}
+
+/* Header Responsive */
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .page-header p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+    
+    .page-header p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Search Controls Responsive */
+.search-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .search-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-input,
+    .filter-select {
+        width: 100%;
+    }
+}
+
+/* Pagination Responsive */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+@media (max-width: 576px) {
+    .pagination {
+        gap: 5px;
+        padding: 15px 10px;
+    }
+    
+    .pagination button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Action Buttons Responsive */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 576px) {
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .action-buttons .btn,
+    .action-buttons button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Student Avatar Responsive */
+.student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+    .student-avatar {
+        width: 35px;
+        height: 35px;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .student-avatar {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Status Badge Responsive */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+    .status-badge {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        border-radius: 10px;
+    }
+}
+
+/* File Upload Responsive */
+.file-upload {
+    border: 2px dashed var(--gray-medium);
+    border-radius: var(--border-radius);
+    padding: 40px 20px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+@media (max-width: 768px) {
+    .file-upload {
+        padding: 30px 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .file-upload {
+        padding: 20px 10px;
+    }
+}
+
+/* Hidden Classes for Responsive */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+
+@media (max-width: 768px) {
+    .d-md-none { display: none !important; }
+    .d-md-block { display: block !important; }
+    .d-md-flex { display: flex !important; }
+}
+
+@media (max-width: 576px) {
+    .d-sm-none { display: none !important; }
+    .d-sm-block { display: block !important; }
+    .d-sm-flex { display: flex !important; }
+}
+
+/* Text Responsive */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+@media (max-width: 576px) {
+    .text-sm-center { text-align: center !important; }
+    .text-sm-left { text-align: left !important; }
+}
+
+/* Spacing Responsive */
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+.mt-5 { margin-top: 3rem; }
+
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 3rem; }
+
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 1rem; }
+.p-4 { padding: 1.5rem; }
+.p-5 { padding: 3rem; }
+
+/* Overflow Handling */
+.overflow-auto { overflow: auto; }
+.overflow-hidden { overflow: hidden; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .page-header,
+    .search-section,
+    .pagination,
+    .action-buttons {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .main-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: none !important;
+    }
+}

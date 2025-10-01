@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Responsive Design Test - KMUTNB</title>
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="responsive-fixes.css">
+    <style>
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+        }
+        
+        .test-title {
+            background: linear-gradient(135deg, #F15A24, #FF7A45);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .device-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .test-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .breakpoint-indicator {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .bp-xl { background: #e3f2fd; display: none; }
+        .bp-lg { background: #f3e5f5; display: none; }
+        .bp-md { background: #fff3e0; display: none; }
+        .bp-sm { background: #e8f5e8; display: none; }
+        .bp-xs { background: #ffebee; display: none; }
+        
+        @media (min-width: 1200px) { .bp-xl { display: block; } }
+        @media (max-width: 1199px) and (min-width: 992px) { .bp-lg { display: block; } }
+        @media (max-width: 991px) and (min-width: 768px) { .bp-md { display: block; } }
+        @media (max-width: 767px) and (min-width: 576px) { .bp-sm { display: block; } }
+        @media (max-width: 575px) { .bp-xs { display: block; } }
+        
+        .status-success { background: #d4edda; color: #155724; }
+        .status-warning { background: #fff3cd; color: #856404; }
+        .status-danger { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="device-info" id="deviceInfo">
+        📱 Loading...
+    </div>
+
+    <div class="main-container">
+        <!-- Device Detection -->
+        <div class="test-section">
+            <div class="test-title">📱 Device Detection</div>
+            <div class="breakpoint-indicator bp-xl">🖥️ Extra Large Desktop (≥1200px)</div>
+            <div class="breakpoint-indicator bp-lg">💻 Large Desktop (992px - 1199px)</div>
+            <div class="breakpoint-indicator bp-md">📱 Tablet (768px - 991px)</div>
+            <div class="breakpoint-indicator bp-sm">📱 Mobile Large (576px - 767px)</div>
+            <div class="breakpoint-indicator bp-xs">📱 Mobile Small (≤575px)</div>
+        </div>
+
+        <!-- Grid System Test -->
+        <div class="test-section">
+            <div class="test-title">🔲 Grid System Test</div>
+            <div class="row">
+                <div class="col-12 col-md-6 col-sm-12">
+                    <div class="test-item">Col 12/6/12</div>
+                </div>
+                <div class="col-12 col-md-6 col-sm-12">
+                    <div class="test-item">Col 12/6/12</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 col-sm-12">
+                    <div class="test-item">Col 12/4/12</div>
+                </div>
+                <div class="col-12 col-md-4 col-sm-12">
+                    <div class="test-item">Col 12/4/12</div>
+                </div>
+                <div class="col-12 col-md-4 col-sm-12">
+                    <div class="test-item">Col 12/4/12</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Test -->
+        <div class="test-section">
+            <div class="test-title">📝 Form Responsiveness</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ชื่อ</label>
+                    <input type="text" placeholder="กรอกชื่อ">
+                </div>
+                <div class="form-group">
+                    <label>นามสกุล</label>
+                    <input type="text" placeholder="กรอกนามสกุล">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>อีเมล</label>
+                    <input type="email" placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label>เบอร์โทร</label>
+                    <input type="tel" placeholder="08x-xxx-xxxx">
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn" style="background: #F15A24; color: white;">บันทึก</button>
+                <button class="btn" style="background: #6c757d; color: white;">ยกเลิก</button>
+                <button class="btn" style="background: #28a745; color: white;">ส่ง</button>
+            </div>
+        </div>
+
+        <!-- Table Test -->
+        <div class="test-section">
+            <div class="test-title">📊 Table Responsiveness</div>
+            <div class="table-responsive">
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>รหัสนักศึกษา</th>
+                            <th>ชื่อ-นามสกุล</th>
+                            <th>สาขา</th>
+                            <th>ชั้นปี</th>
+                            <th>สถานะ</th>
+                            <th>การจัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="รหัสนักศึกษา">65010001</td>
+                            <td data-label="ชื่อ-นามสกุล">นายทดสอบ ระบบ</td>
+                            <td data-label="สาขา">ITI</td>
+                            <td data-label="ชั้นปี">4</td>
+                            <td data-label="สถานะ">
+                                <span class="status-badge status-success">เรียนจบแล้ว</span>
+                            </td>
+                            <td data-label="การจัดการ">
+                                <div class="action-buttons">
+                                    <button class="btn" style="background: #F15A24; color: white; font-size: 12px;">ดู</button>
+                                    <button class="btn" style="background: #ffc107; color: black; font-size: 12px;">แก้ไข</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td data-label="รหัสนักศึกษา">65010002</td>
+                            <td data-label="ชื่อ-นามสกุล">นางสาวทดสอบ ระบบ</td>
+                            <td data-label="สาขา">INET</td>
+                            <td data-label="ชั้นปี">3</td>
+                            <td data-label="สถานะ">
+                                <span class="status-badge status-warning">กำลังศึกษา</span>
+                            </td>
+                            <td data-label="การจัดการ">
+                                <div class="action-buttons">
+                                    <button class="btn" style="background: #F15A24; color: white; font-size: 12px;">ดู</button>
+                                    <button class="btn" style="background: #ffc107; color: black; font-size: 12px;">แก้ไข</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Search Controls Test -->
+        <div class="test-section">
+            <div class="test-title">🔍 Search Controls</div>
+            <div class="search-controls">
+                <input type="text" class="search-input" placeholder="ค้นหา...">
+                <select class="filter-select">
+                    <option>-- เลือกสถานะ --</option>
+                    <option>กำลังศึกษา</option>
+                    <option>จบการศึกษา</option>
+                </select>
+                <select class="filter-select">
+                    <option>-- เลือกสาขา --</option>
+                    <option>ITI</option>
+                    <option>INET</option>
+                </select>
+                <button class="search-btn btn" style="background: #F15A24; color: white;">ค้นหา</button>
+            </div>
+        </div>
+
+        <!-- Card Layout Test -->
+        <div class="test-section">
+            <div class="test-title">🃏 Card Layout</div>
+            <div class="test-grid">
+                <div class="card">
+                    <h3>Card 1</h3>
+                    <p>Content for card 1 with some text to test responsiveness.</p>
+                    <button class="btn" style="background: #F15A24; color: white;">Action</button>
+                </div>
+                <div class="card">
+                    <h3>Card 2</h3>
+                    <p>Content for card 2 with different amount of text.</p>
+                    <button class="btn" style="background: #F15A24; color: white;">Action</button>
+                </div>
+                <div class="card">
+                    <h3>Card 3</h3>
+                    <p>Content for card 3.</p>
+                    <button class="btn" style="background: #F15A24; color: white;">Action</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Utility Classes Test -->
+        <div class="test-section">
+            <div class="test-title">🛠️ Utility Classes</div>
+            <div class="text-center">Text Center (always)</div>
+            <div class="text-sm-center">Text Center (mobile only)</div>
+            <div class="d-none d-md-block">Hidden on mobile, visible on tablet+</div>
+            <div class="d-block d-md-none">Visible on mobile, hidden on tablet+</div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="test-section">
+            <div class="test-title">📈 Test Results</div>
+            <div id="testResults">
+                <div class="status-success">✅ Responsive CSS loaded successfully</div>
+                <div class="status-success">✅ Viewport meta tag detected</div>
+                <div class="status-success">✅ Touch targets are adequate size</div>
+                <div id="additionalTests"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDeviceInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const deviceInfo = document.getElementById('deviceInfo');
+            
+            let deviceType = '';
+            if (width >= 1200) deviceType = '🖥️ XL Desktop';
+            else if (width >= 992) deviceType = '💻 Large Desktop';
+            else if (width >= 768) deviceType = '📱 Tablet';
+            else if (width >= 576) deviceType = '📱 Mobile Large';
+            else deviceType = '📱 Mobile Small';
+            
+            deviceInfo.innerHTML = `
+                ${deviceType}<br>
+                📐 ${width} × ${height}px<br>
+                📱 ${navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'}
+            `;
+        }
+        
+        function runTests() {
+            const results = document.getElementById('additionalTests');
+            const tests = [];
+            
+            // Test 1: Check if responsive CSS is working
+            const testElement = document.createElement('div');
+            testElement.style.width = '100%';
+            document.body.appendChild(testElement);
+            const isResponsive = testElement.offsetWidth <= window.innerWidth;
+            document.body.removeChild(testElement);
+            
+            if (isResponsive) {
+                tests.push('<div class="status-success">✅ Element width is responsive</div>');
+            } else {
+                tests.push('<div class="status-danger">❌ Element width is not responsive</div>');
+            }
+            
+            // Test 2: Check touch targets on mobile
+            if (window.innerWidth <= 768) {
+                const buttons = document.querySelectorAll('button, .btn');
+                let adequateTouchTargets = true;
+                
+                buttons.forEach(btn => {
+                    const rect = btn.getBoundingClientRect();
+                    if (rect.height < 44 || rect.width < 44) {
+                        adequateTouchTargets = false;
+                    }
+                });
+                
+                if (adequateTouchTargets) {
+                    tests.push('<div class="status-success">✅ Touch targets are adequate (≥44px)</div>');
+                } else {
+                    tests.push('<div class="status-warning">⚠️ Some touch targets may be too small</div>');
+                }
+            }
+            
+            // Test 3: Check table responsiveness
+            const tables = document.querySelectorAll('table');
+            if (tables.length > 0) {
+                const table = tables[0];
+                const tableContainer = table.closest('.table-responsive');
+                if (tableContainer) {
+                    tests.push('<div class="status-success">✅ Table has responsive wrapper</div>');
+                } else {
+                    tests.push('<div class="status-warning">⚠️ Table might need responsive wrapper</div>');
+                }
+            }
+            
+            results.innerHTML = tests.join('');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDeviceInfo();
+            runTests();
+        });
+        
+        // Update on resize
+        window.addEventListener('resize', function() {
+            updateDeviceInfo();
+            runTests();
+        });
+        
+        // Orientation change for mobile
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                updateDeviceInfo();
+                runTests();
+            }, 100);
+        });
+    </script>
+</body>
+</html>

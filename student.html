@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มการล็อกอิน นักศึกษา</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            background: linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 25%, #fafafa 50%, #e8f4f8 75%, #f0f4ff 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            animation: slideInUp 0.8s ease-out;
+        }
+        
+        .navigation {
+            margin-bottom: 20px;
+        }
+        
+        .nav-link {
+            color: #9370db;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(147, 112, 219, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 1px solid rgba(147, 112, 219, 0.2);
+        }
+        
+        .nav-link:hover {
+            background: rgba(147, 112, 219, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(147, 112, 219, 0.3);
+        }
+        
+        .login-form {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(147, 112, 219, 0.15);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(147, 112, 219, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .login-form h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #6a4c93;
+            margin: 0 0 10px 0;
+            text-shadow: 0 2px 4px rgba(106, 76, 147, 0.1);
+        }
+        
+        .login-form h2 {
+            font-size: 16px;
+            color: #9370db;
+            margin: 0 0 30px 0;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #6a4c93;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(147, 112, 219, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            color: #6a4c93;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #9370db;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .form-group input::placeholder {
+            color: #b19cd9;
+            opacity: 0.7;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #9370db 0%, #ba68c8 50%, #ce93d8 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            box-shadow: 0 5px 15px rgba(147, 112, 219, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(147, 112, 219, 0.4);
+            background: linear-gradient(135deg, #8e24aa 0%, #ab47bc 50%, #c39bd3 100%);
+        }
+        
+        .login-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .forgot-btn {
+            background: transparent;
+            color: #9370db;
+            padding: 12px;
+            border: 2px solid rgba(147, 112, 219, 0.3);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+        }
+        
+        .forgot-btn:hover {
+            background: rgba(147, 112, 219, 0.1);
+            border-color: #9370db;
+            transform: translateY(-2px);
+        }
+        
+        /* CSS Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                max-width: 400px;
+            }
+            
+            .login-form {
+                padding: 30px 25px;
+                border-radius: 16px;
+            }
+            
+            .login-form h1 {
+                font-size: 24px;
+            }
+            
+            .login-form h2 {
+                font-size: 14px;
+            }
+            
+            .form-group input {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .login-btn {
+                padding: 12px 25px;
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+                max-width: 350px;
+            }
+            
+            .login-form {
+                padding: 25px 20px;
+            }
+            
+            .login-form h1 {
+                font-size: 22px;
+            }
+            
+            .form-group input {
+                padding: 10px;
+            }
+            
+            .button-group {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <a href="index.html" class="nav-link">← กลับหน้าหลัก</a>
+        </div>
+        
+        <div class="login-form">
+            <h1>🎓 ล็อกอินนักศึกษา</h1>
+            <h2>เข้าสู่ระบบจัดการโปรเจค</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label for="username">รหัสนักศึกษา</label>
+                    <input type="text" id="username" name="username" placeholder="กรอกรหัสนักศึกษา">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">รหัสผ่าน</label>
+                    <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่าน">
+                </div>
+                
+                <div class="button-group">
+                    <a href="student-dashboard.html" class="login-btn">เข้าสู่ระบบ</a>
+                    <button type="button" class="forgot-btn">ลืมรหัสผ่าน?</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

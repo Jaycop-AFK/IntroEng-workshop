@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การให้คะแนนนักศึกษา - Staff Portal</title>
+    <link rel="stylesheet" href="staff-navigation.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            color: #333;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #F15A24, #FF7A45);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(241, 90, 36, 0.3);
+        }
+        
+        .page-header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            margin: 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        /* Student Grading Section */
+        .grading-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        .grading-form-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideInUp 0.8s ease-out;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #F15A24;
+            margin: 0;
+        }
+        
+        .show-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .show-controls select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .search-box {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px; /* Prevent iOS zoom */
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #F15A24;
+            box-shadow: 0 0 0 3px rgba(241, 90, 36, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .search-input:hover:not(:focus) {
+            border-color: #FF7A45;
+        }
+        
+        /* Enhanced Table Container for Mobile */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            min-width: 800px; /* Force minimum width for horizontal scroll */
+        }
+        
+        .students-table th {
+            background: #F15A24;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .students-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
+        }
+        
+        .students-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .checkbox-cell {
+            width: 40px;
+            text-align: center;
+        }
+        
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #F15A24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .student-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .student-details h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .score-cell {
+            font-weight: bold;
+            color: #F15A24;
+            font-size: 18px;
+        }
+        
+        .file-link {
+            color: #F15A24;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 5px;
+        }
+        
+        .pagination .page-btn {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .pagination .page-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .pagination .page-btn.active {
+            background: #F15A24;
+            color: white;
+            border-color: #F15A24;
+        }
+        
+        /* Fix form container overflow */
+        .grading-form-section {
+            overflow-x: hidden;
+        }
+        
+        .grading-form {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* Grading Form Section */
+        .grading-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            max-width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px; /* Prevent iOS zoom */
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            outline: none;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #F15A24;
+            box-shadow: 0 0 0 3px rgba(241, 90, 36, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .form-group input:hover:not(:focus),
+        .form-group textarea:hover:not(:focus) {
+            border-color: #FF7A45;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #F15A24, #FF7A45);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            margin: 30px auto 0;
+            box-shadow: 0 4px 15px rgba(241, 90, 36, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #E14A1C, #F15A24);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(241, 90, 36, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 15px rgba(241, 90, 36, 0.3);
+        }
+        
+        /* Navigation responsive adjustments */
+        @media (max-width: 992px) {
+            .main-container {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 10px;
+                padding: 10px;
+            }
+            
+            .page-header {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8em;
+            }
+            
+            .page-header p {
+                font-size: 1em;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.2em;
+            }
+            
+            .search-box {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                max-width: 100%;
+                font-size: 16px;
+            }
+            
+            /* Table becomes horizontally scrollable */
+            .grading-section {
+                margin-bottom: 20px;
+            }
+            
+            .students-table {
+                font-size: 14px;
+            }
+            
+            .students-table th,
+            .students-table td {
+                padding: 10px 8px;
+                white-space: nowrap;
+            }
+            
+            .student-avatar {
+                width: 30px;
+                height: 30px;
+                margin-right: 10px;
+                font-size: 12px;
+            }
+            
+            .student-details h4 {
+                font-size: 14px;
+            }
+            
+            .score-cell {
+                font-size: 16px;
+            }
+            
+            /* Form adjustments */
+            .grading-form {
+                padding: 20px 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-group label {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                padding: 12px;
+                font-size: 16px; /* Important for iOS */
+                border-radius: 8px;
+                width: 100%;
+                max-width: 100%;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                outline: none;
+            }
+            }
+            
+            .submit-btn {
+                padding: 14px 25px;
+                font-size: 15px;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            /* Pagination */
+            .pagination {
+                padding: 15px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .pagination .page-btn {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-container {
+                margin: 5px;
+                padding: 5px;
+            }
+            
+            .page-header {
+                padding: 15px 10px;
+                border-radius: 10px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5em;
+                margin-bottom: 5px;
+            }
+            
+            .page-header p {
+                font-size: 0.9em;
+            }
+            
+            .grading-section,
+            .grading-form-section {
+                border-radius: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .section-header {
+                padding: 12px 15px;
+            }
+            
+            .section-title {
+                font-size: 1.1em;
+            }
+            
+            .search-box {
+                padding: 12px 15px;
+            }
+            
+            .students-table th,
+            .students-table td {
+                padding: 8px 6px;
+                font-size: 13px;
+            }
+            
+            .student-avatar {
+                width: 25px;
+                height: 25px;
+                font-size: 11px;
+                margin-right: 8px;
+            }
+            
+            .student-details h4 {
+                font-size: 13px;
+            }
+            
+            .grading-form {
+                padding: 15px 10px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .form-group label {
+                font-size: 13px;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                padding: 10px;
+                border-radius: 6px;
+                font-size: 16px; /* Keep 16px for iOS */
+                width: 100%;
+                max-width: 100%;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                outline: none;
+            }
+            
+            .submit-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                border-radius: 10px;
+            }
+            
+            .show-controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .show-controls select {
+                padding: 6px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+     <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+               <span class="brand-icon">
+                    <img src="fitm.png" alt="kmutnb logo" style="width:80px;height:50px;vertical-align:middle;">
+                </span>
+              
+            </div>
+            
+            <div class="nav-menu">
+                <a href="staff-dashboard.html" class="nav-link">
+                    <span class="nav-icon">📊</span>
+                    จัดการข้อมูลนักศึกษา
+                </a>
+           
+                <a href="exam-management.html" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    สร้างการสอบออนไลน์
+                </a>
+               
+                <a href="project-reports.html" class="nav-link">
+                    <span class="nav-icon">📈</span>
+                    รายงานความก้าวหน้า
+                </a>
+                <a href="finalExam-management.html" class="nav-link">
+                    <span class="nav-icon">📄</span>
+                    คำขอยื่นสอบ
+                </a>
+                 <a href="assessment.html" class="nav-link">
+                    <span class="nav-icon">📝</span>
+                    คะแนนสอบ
+                </a>
+                <a href="grading.html" class="nav-link  active">
+                    <span class="nav-icon">📝</span>
+                    ลงนาม
+                </a>
+                 <a href="project-documents.html" class="nav-link">
+                    <span class="nav-icon">📁</span>
+                    เอกสารโปรเจค
+                </a>
+              
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name">อาจารย์สมชาย</span>
+                   
+                </div>
+                <a href="index.html" class="nav-logout">
+                    <span class="nav-icon">🚪</span>
+                    ออกจากระบบ
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1>ลงนามอนุมัติ</h1>
+            <p>ลงนามอนุมัติผ่านโปรเจคจบ</p>
+        </div>
+
+        <!-- Student Grading Table Section -->
+        <div class="grading-section">
+            <div class="section-header">
+                <h2 class="section-title">รายการคะแนนนักศึกษา</h2>
+                <div class="show-controls">
+                    <span>Show</span>
+                    <select>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span>entries</span>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search...">
+            </div>
+
+            <div class="table-container">
+                <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-cell">
+                            <input type="checkbox">
+                        </th>
+                        <th>หัวข้อ</th>
+                        <th>ผลคะแนนรวม</th>
+                        <th>รายละเอียด</th>
+                        <th>ประเภทโครงงาน</th>
+                        <th>ไฟล์ที่แนบ</th>
+                
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="checkbox-cell">
+                            <input type="checkbox">
+                        </td>
+                        <td>
+                            <div class="student-info">
+                                <div class="student-avatar">H</div>
+                                <div class="student-details">
+                                    <h4>ระบบควบคุมสต๊อก</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>100</td>
+                        <td class="score-cell">ดีมากระบบน่าสนใจ</td>
+                        <td>โครงงานพิเศษ</td>
+                       
+                        <td><a href="#" class="file-link">test.pdf</a></td>
+                    </tr>
+                    <tr>
+                        <td class="checkbox-cell">
+                            <input type="checkbox">
+                        </td>
+                        <td>
+                            <div class="student-info">
+                                <div class="student-avatar">L</div>
+                                <div class="student-details">
+                                    <h4>ระบบจัดการห้องเรียน</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>97</td>
+                        <td class="score-cell">ดีมากระบบน่าสนใจ</td>
+                        <td>โครงงานพิเศษ</td>
+                      
+              
+                        <td><a href="#" class="file-link">test.pdf</a></td>
+                    </tr>
+                    <tr>
+                        <td class="checkbox-cell">
+                            <input type="checkbox">
+                        </td>
+                        <td>
+                            <div class="student-info">
+                                <div class="student-avatar">P</div>
+                                <div class="student-details">
+                                    <h4>ระบบจัดการคลาวด์</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>89</td>
+                        <td class="score-cell">ดีมากระบบน่าสนใจ</td>
+                        <td>โครงงานพิเศษ</td>
+
+                        <td><a href="#" class="file-link">test.pdf</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="pagination">
+                <a href="#" class="page-btn">Previous</a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">Next</a>
+            </div>
+        </div>
+
+        <!-- Grading Form Section -->
+        <div class="grading-form-section">
+            <div class="section-header">
+                <h2 class="section-title">ลงนามอนุมัติ</h2>
+            </div>
+            
+            <form class="grading-form">
+                <div class="form-group">
+                    <label>ประธานกรรมการ</label>
+                    <input type="text" placeholder="นายสมชาย ใจดี">
+                </div>
+
+                <div class="form-group">
+                    <label>กรรมการสอบ</label>
+                          <input type="text" placeholder="นายสมใจ ชายสี่">
+                </div>
+
+                <div class="form-group">
+                    <label>อาจารย์ที่ปรึกษา</label>
+                         <input type="text" placeholder="นายอาแซ่ หวัง">
+                </div>
+
+                <button type="submit" class="submit-btn">อนุมัติ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="navigation.js"></script>
+</body>
+</html>

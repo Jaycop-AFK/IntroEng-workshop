@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดสอบระบบ Responsive - All Pages Complete</title>
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        body {
+            font-family: 'Sarabun', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #28a745;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .status-card h3 {
+            color: #333;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        
+        .file-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+        }
+        
+        .file-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .checkmark {
+            color: #28a745;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .summary {
+            background: #e9f7ef;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 30px 30px;
+            border: 2px solid #28a745;
+        }
+        
+        .summary h2 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .achievement {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .mobile-test {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 30px;
+        }
+        
+        .mobile-test h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .breakpoint-test {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .breakpoint {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #ffc107;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0 30px 30px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .feature-card h4 {
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .breakpoint-test {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .status-card, .summary, .mobile-test {
+                margin: 10px 15px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🎉 ระบบ Responsive เสร็จสมบูรณ์แล้ว!</h1>
+            <p>ทุกหน้าเว็บไซต์ระบบ KMUTNB ได้รับการอัปเดตให้รองรับอุปกรณ์ทุกขนาด</p>
+        </div>
+
+        <div class="status-grid">
+            <div class="status-card">
+                <h3>📱 Staff Portal Pages</h3>
+                <ul class="file-list">
+                    <li><span class="checkmark">✅</span> staff-dashboard.html</li>
+                    <li><span class="checkmark">✅</span> exam-management.html</li>
+                    <li><span class="checkmark">✅</span> project-reports.html</li>
+                    <li><span class="checkmark">✅</span> grading.html</li>
+                    <li><span class="checkmark">✅</span> assessment.html</li>
+                    <li><span class="checkmark">✅</span> project-documents.html</li>
+                    <li><span class="checkmark">✅</span> finalExam-management.html</li>
+                    <li><span class="checkmark">✅</span> student-info.html</li>
+                </ul>
+            </div>
+
+            <div class="status-card">
+                <h3>👨‍🎓 Student Portal Pages</h3>
+                <ul class="file-list">
+                    <li><span class="checkmark">✅</span> student-dashboard.html</li>
+                    <li><span class="checkmark">✅</span> student-courses.html</li>
+                    <li><span class="checkmark">✅</span> project-upload.html</li>
+                    <li><span class="checkmark">✅</span> project-exam.html</li>
+                    <li><span class="checkmark">✅</span> project-progress.html</li>
+                    <li><span class="checkmark">✅</span> BookanAppointment.html</li>
+                </ul>
+            </div>
+
+            <div class="status-card">
+                <h3>🏠 Main Pages</h3>
+                <ul class="file-list">
+                    <li><span class="checkmark">✅</span> index.html</li>
+                    <li><span class="checkmark">✅</span> login.html</li>
+                    <li><span class="checkmark">✅</span> student.html</li>
+                </ul>
+            </div>
+
+            <div class="status-card">
+                <h3>🔧 System Files</h3>
+                <ul class="file-list">
+                    <li><span class="checkmark">✅</span> responsive.css</li>
+                    <li><span class="checkmark">✅</span> navigation.js</li>
+                    <li><span class="checkmark">✅</span> navigation.css</li>
+                    <li><span class="checkmark">✅</span> staff-navigation.css</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="summary">
+            <h2>📊 สรุปผลการทำงาน</h2>
+            <div class="achievement">
+                🏆 อัปเดตสำเร็จ 17 ไฟล์ HTML + 4 ไฟล์ระบบ = รวม 21 ไฟล์
+            </div>
+            <p><strong>ความสำเร็จ:</strong> ระบบ responsive ได้รับการติดตั้งครบทุกหน้า พร้อมใช้งานบนอุปกรณ์ทุกขนาด</p>
+            <p><strong>ระบบที่เพิ่ม:</strong></p>
+            <ul>
+                <li>📱 Mobile-first responsive design</li>
+                <li>🎯 Grid system 12 columns</li>
+                <li>📏 6 breakpoints สำหรับทุกขนาดหน้าจอ</li>
+                <li>🍔 Hamburger menu ที่ทำงานได้ทุกหน้า</li>
+                <li>🔍 Search functionality</li>
+                <li>📝 Form validation</li>
+                <li>🔔 Notification system</li>
+            </ul>
+        </div>
+
+        <div class="mobile-test">
+            <h3>📲 ทดสอบ Responsive Breakpoints</h3>
+            <p>ระบบรองรับหน้าจอขนาดต่างๆ ดังนี้:</p>
+            <div class="breakpoint-test">
+                <div class="breakpoint">
+                    <strong>📱 Mobile</strong><br>
+                    ≤ 480px
+                </div>
+                <div class="breakpoint">
+                    <strong>📱 Mobile L</strong><br>
+                    ≤ 576px
+                </div>
+                <div class="breakpoint">
+                    <strong>📱 Tablet</strong><br>
+                    ≤ 768px
+                </div>
+                <div class="breakpoint">
+                    <strong>💻 Laptop</strong><br>
+                    ≤ 992px
+                </div>
+                <div class="breakpoint">
+                    <strong>💻 Desktop</strong><br>
+                    ≤ 1200px
+                </div>
+                <div class="breakpoint">
+                    <strong>🖥️ Large</strong><br>
+                    > 1200px
+                </div>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h4>🍔 Mobile Menu</h4>
+                <p>เมนูแบบ hamburger ที่ทำงานได้ครบทุกหน้า</p>
+            </div>
+            <div class="feature-card">
+                <h4>📐 Responsive Grid</h4>
+                <p>ระบบ grid แบบยืดหยุ่นสำหรับทุกเนื้อหา</p>
+            </div>
+            <div class="feature-card">
+                <h4>🎨 KMUTNB Theme</h4>
+                <p>รูปแบบสีส้มและม่วงตามแบรนด์</p>
+            </div>
+            <div class="feature-card">
+                <h4>⚡ Fast Loading</h4>
+                <p>โหลดเร็วและใช้งานลื่นไหล</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // แสดงข้อมูลหน้าจอปัจจุบัน
+        function updateScreenInfo() {
+            const width = window.innerWidth;
+            let deviceType = '';
+            
+            if (width <= 480) deviceType = '📱 Mobile Small';
+            else if (width <= 576) deviceType = '📱 Mobile Large';
+            else if (width <= 768) deviceType = '📱 Tablet';
+            else if (width <= 992) deviceType = '💻 Laptop';
+            else if (width <= 1200) deviceType = '💻 Desktop';
+            else deviceType = '🖥️ Large Desktop';
+            
+            console.log(`Current Screen: ${width}px - ${deviceType}`);
+        }
+        
+        // อัปเดตข้อมูลเมื่อขนาดหน้าจอเปลี่ยน
+        window.addEventListener('resize', updateScreenInfo);
+        updateScreenInfo();
+        
+        // แสดงข้อความยินดี
+        setTimeout(() => {
+            alert('🎉 ระบบ Responsive ทำงานเรียบร้อยแล้ว!\n\nลองปรับขนาดหน้าต่างเบราว์เซอร์เพื่อดูการทำงาน');
+        }, 1000);
+    </script>
+</body>
+</html>

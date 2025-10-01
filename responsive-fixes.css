@@ -1,0 +1,325 @@
+/* Responsive Fixes for KMUTNB Student Management System */
+/* การแก้ไขปัญหา responsive เฉพาะส่วน */
+
+/* Import IBM Plex Sans Thai Font */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap');
+
+/* Fix for tables on mobile */
+@media (max-width: 768px) {
+    .students-table,
+    .data-table,
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .students-table thead,
+    .data-table thead {
+        display: block;
+    }
+    
+    .students-table tbody,
+    .data-table tbody {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    .students-table tr,
+    .data-table tr {
+        display: block;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 10px;
+    }
+    
+    .students-table td,
+    .data-table td {
+        display: block;
+        text-align: left;
+        padding: 5px;
+        border: none;
+    }
+    
+    .students-table td::before,
+    .data-table td::before {
+        content: attr(data-label) ": ";
+        font-weight: bold;
+        display: inline-block;
+        width: 120px;
+    }
+}
+
+/* Fix for search controls */
+@media (max-width: 768px) {
+    .search-controls {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .search-input,
+    .filter-select,
+    .search-btn {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* Fix for form rows */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column !important;
+    }
+    
+    .form-group {
+        width: 100% !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .form-group.half-width {
+        width: 100% !important;
+    }
+}
+
+/* Fix for menu cards */
+@media (max-width: 768px) {
+    .menu-options {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+    
+    .menu-card {
+        width: 100% !important;
+        max-width: 300px !important;
+    }
+}
+
+/* Fix for button groups */
+@media (max-width: 576px) {
+    .button-group,
+    .action-buttons {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .button-group button,
+    .action-buttons button,
+    .button-group a,
+    .action-buttons a {
+        width: 100% !important;
+    }
+}
+
+/* Fix for navigation */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-wrap: wrap !important;
+    }
+    
+    .nav-menu {
+        order: 3 !important;
+        width: 100% !important;
+    }
+    
+    .nav-user {
+        order: 2 !important;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex !important;
+        order: 1 !important;
+    }
+}
+
+/* Fix for containers */
+@media (max-width: 576px) {
+    .main-container,
+    .container {
+        padding: 10px !important;
+        margin: 5px auto !important;
+    }
+    
+    .page-header {
+        padding: 15px !important;
+        text-align: center !important;
+    }
+    
+    .search-section,
+    .results-section {
+        padding: 15px !important;
+    }
+}
+
+/* Fix for file upload */
+@media (max-width: 576px) {
+    .file-upload {
+        padding: 20px 10px !important;
+    }
+    
+    .file-upload-text {
+        font-size: 14px !important;
+    }
+}
+
+/* Fix for status badges */
+@media (max-width: 576px) {
+    .status-badge {
+        display: block !important;
+        text-align: center !important;
+        margin: 5px 0 !important;
+    }
+}
+
+/* Fix for pagination */
+@media (max-width: 576px) {
+    .pagination {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    
+    .pagination button {
+        margin: 2px !important;
+        min-width: 40px !important;
+    }
+}
+
+/* Fix for results header */
+@media (max-width: 768px) {
+    .results-header {
+        flex-direction: column !important;
+        gap: 15px !important;
+        text-align: center !important;
+    }
+    
+    .show-entries {
+        justify-content: center !important;
+    }
+}
+
+/* Fix for student info display */
+@media (max-width: 576px) {
+    .student-info {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+    
+    .student-avatar {
+        margin: 0 auto 10px auto !important;
+    }
+    
+    .student-details {
+        text-align: center !important;
+    }
+}
+
+/* Fix for dashboard header */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 15px !important;
+    }
+    
+    .role-badge {
+        align-self: flex-end !important;
+    }
+}
+
+/* Fix for exam cards */
+@media (max-width: 576px) {
+    .exam-card,
+    .appointment-card {
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .exam-header,
+    .appointment-header {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+}
+
+/* Fix for login forms */
+@media (max-width: 576px) {
+    .login-form {
+        padding: 20px 15px !important;
+    }
+    
+    .login-form input {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+    }
+    
+    .login-btn {
+        width: 100% !important;
+        padding: 15px !important;
+        font-size: 16px !important;
+    }
+}
+
+/* Fix for progress indicators */
+@media (max-width: 576px) {
+    .progress-container {
+        margin: 10px 0 !important;
+    }
+    
+    .progress-bar {
+        height: 8px !important;
+    }
+    
+    .progress-text {
+        font-size: 12px !important;
+    }
+}
+
+/* Fix for card layouts */
+@media (max-width: 768px) {
+    .card-container {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .card {
+        margin-bottom: 15px !important;
+    }
+}
+
+/* Fix for text overflow */
+@media (max-width: 576px) {
+    .text-truncate {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    
+    .long-text {
+        word-break: break-word !important;
+        hyphens: auto !important;
+    }
+}
+
+/* Universal mobile improvements */
+@media (max-width: 576px) {
+    /* Ensure touch targets are at least 44px */
+    button,
+    .btn,
+    a,
+    input[type="submit"] {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+    
+    /* Improve readability */
+    body {
+        line-height: 1.6 !important;
+    }
+    
+    /* Better spacing */
+    * {
+        margin: 0 !important;
+    }
+    
+    .spacing > * + * {
+        margin-top: 1rem !important;
+    }
+}

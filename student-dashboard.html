@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลนักศึกษา - Roles นักศึกษา</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="student-dashboard.css">
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Sarabun', Arial, sans-serif !important;
+        }
+        
+        body, html {
+            font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Sarabun', Arial, sans-serif !important;
+        }
+        
+        .nav-container, .navbar, .nav-link, .nav-menu, .nav-brand, .user-info {
+            font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Sarabun', Arial, sans-serif !important;
+        }
+        
+        h1, h2, h3, h4, h5, h6, p, span, div, label, input, select, textarea, button {
+            font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Sarabun', Arial, sans-serif !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+     <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="fitm.png" alt="kmutnb logo" style="width:80px;height:50px;vertical-align:middle;">
+               
+            </div>
+            
+            <div class="nav-menu">
+                <a href="student-dashboard.html" class="nav-link active">
+                    <span class="nav-icon">👤</span>
+                    แบบฟอร์มการนำเสนอโครงงาน
+                </a>
+                <a href="student-courses.html" class="nav-link">
+                    <span class="nav-icon">📚</span>
+                    ข้อมูลนักศึกษา
+                </a>
+               
+                <a href="project-progress.html" class="nav-link">
+                    <span class="nav-icon">📈</span>
+                    รายงานความก้าวหน้า
+                </a>
+                <a href="project-exam.html" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    ยื่นสอบโปรเจค
+                </a>
+                 <a href="BookanAppointment.html" class="nav-link">
+                    <span class="nav-icon">📆</span>
+                    กำหนดการสอบโปรเจค
+                </a>
+                <a href="project-upload.html" class="nav-link">
+                    <span class="nav-icon">📁</span>
+                    อัพโหลดเอกสาร
+                </a>
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name">นักศึกษา</span>
+                 
+                </div>
+                <a href="index.html" class="nav-logout">
+                    <span class="nav-icon">🚪</span>
+                    ออกจากระบบ
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>แบบฟอร์มการนำเสนอโครงงานและรายละเอียดโครงงาน</h1>
+            </div>
+        </header>
+
+        <form class="student-form">
+            <!-- ข้อมูลพื้นฐาน -->
+            <section class="form-section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project-title">หัวข้อโครงงาน</label>
+                        <input type="text" id="project-title" name="project-title" placeholder="หัวข้อโครงงาน">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project-description">รายละเอียดโครงงาน</label>
+                        <textarea id="project-description" name="project-description" placeholder="รายละเอียด" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="scope">ขอบเขต</label>
+                        <textarea id="scope" name="scope" placeholder="ขอบเขต" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project-type">ประเภทโครงงาน</label>
+                        <select id="project-type" name="project-type">
+                            <option value="">เลือกประเภท</option>
+                            <option value="เลือกประเภท">เลือกประเภท</option>
+                            <option value="โครงงาน สหกิจ">โครงงาน สหกิจ</option>
+                            <option value="โครงงานพิเศษ">โครงงานพิเศษ</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- รายชื่อผู้จัดทำ -->
+            <section class="form-section">
+                <h3>รายชื่อผู้จัดทำ</h3>
+                
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="member1-id">ชื่อ-สกุล</label>
+                        <input type="text" id="member1-id" name="member1-id" placeholder="ชื่อ-สกุล">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="member1-name">รหัสนักศึกษา</label>
+                        <input type="text" id="member1-name" name="member1-name" placeholder="รหัสนักศึกษา">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="member1-branch">สาขา</label>
+                        <select id="member1-branch" name="member1-branch">
+                            <option value="">เลือกสาขา</option>
+                            
+                            <option value="INET">INET</option>
+                            <option value="INET">INE</option>
+                            <option value="ITI">ITI</option>
+                            <option value="ITI">IT</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="member2-id">ชื่อ-สกุล2</label>
+                        <input type="text" id="member2-id" name="member2-id" placeholder="ชื่อ-สกุล2">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="member2-name">รหัสนักศึกษา2</label>
+                        <input type="text" id="member2-name" name="member2-name" placeholder="รหัสนักศึกษา">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="member2-branch">สาขา</label>
+                        <select id="member2-branch" name="member2-branch">
+                            <option value="">เลือกสาขา</option>
+                            <option value="INET">INET</option>
+                            <option value="INET">INE</option>
+                            <option value="ITI">ITI</option>
+                            <option value="ITI">IT</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- เลือกอาจารย์ที่ปรึกษา -->
+            <section class="form-section">
+                <h3>เลือกอาจารย์ที่ปรึกษา</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="advisor-name">อาจารย์ที่ปรึกษา</label>
+                        <select id="advisor-name" name="advisor-name">
+                            <option value="">เลือกอาจารย์ที่ปรึกษา</option>
+                            <option value="รศ.ดร.อนิราช มิ่งขวัญ">รศ.ดร.อนิราช มิ่งขวัญ</option>
+                            <option value="ผศ.อรบุษป์ วุฒิกมลชัย">ผศ.อรบุษป์ วุฒิกมลชัย</option>
+                            <option value="ผศ.ดร.บีสุดา ดาวเรือง">ผศ.ดร.บีสุดา ดาวเรือง</option>
+                            <option value="ผศ.ดร.ขนิษฐา นามี">ผศ.ดร.ขนิษฐา นามี</option>
+                            <option value="อ.ดร.กาญจน ณ ศรีธะ">อ.ดร.กาญจน ณ ศรีธะ</option>
+                            <option value="ผศ.นพดล บูรณ์กุศล">ผศ.นพดล บูรณ์กุศล</option>
+                            <option value="ผศ.จสต.นพเก้า ทองใบ">ผศ.จสต.นพเก้า ทองใบ</option>
+                            <option value="ผศ.ดร.นิติการ นาคเจือทอง">ผศ.ดร.นิติการ นาคเจือทอง</option>
+                            <option value="ผศ.ดร.นัฎฐพันธ์ นาคพงษ์">ผศ.ดร.นัฎฐพันธ์ นาคพงษ์</option>
+                            <option value="ผศ.นิมิต ศรีคำทา">ผศ.นิมิต ศรีคำทา</option>
+                            <option value="อ.ดร.พิทย์พิมล ชูรอด">อ.ดร.พิทย์พิมล ชูรอด</option>
+                            <option value="ผศ.ดร.พาฝัน ดวงไพศาล">ผศ.ดร.พาฝัน ดวงไพศาล</option>
+                            <option value="อ.ดร.ประดิษฐ์ พิทักษ์เสถียรกุล">อ.ดร.ประดิษฐ์ พิทักษ์เสถียรกุล</option>
+                            <option value="ผศ.พีระศักดิ์ เสรีกุล">ผศ.พีระศักดิ์ เสรีกุล</option>
+                            <option value="ผศ.สมชัย เชียงพงศ์พันธุ์">ผศ.สมชัย เชียงพงศ์พันธุ์</option>
+                            <option value="ผศ.ดร.สุปีติ กุลจันทร์">ผศ.ดร.สุปีติ กุลจันทร์</option>
+                            <option value="ผศ.สิวาลัย จินเจือ">ผศ.สิวาลัย จินเจือ</option>
+                            <option value="ผศ.ดร.สุพาภรณ์ ซิ้มเจริญ">ผศ.ดร.สุพาภรณ์ ซิ้มเจริญ</option>
+                            <option value="ผศ.ดร.ศรายุทธ ธเนศสกุลวัฒนา">ผศ.ดร.ศรายุทธ ธเนศสกุลวัฒนา</option>
+                            <option value="อ.ดร.ศิรินทรา แว่วศรี">อ.ดร.ศิรินทรา แว่วศรี</option>
+                            <option value="อ.ดร.วัชรชัย คงศิริวัฒนา">อ.ดร.วัชรชัย คงศิริวัฒนา</option>
+                            <option value="ผศ.ดร.วันทนี ประจวบศุภกิจ">ผศ.ดร.วันทนี ประจวบศุภกิจ</option>
+                            <option value="รศ.ดร.ยุพิน สรรพคุณ">รศ.ดร.ยุพิน สรรพคุณ</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ระบุข้อมูลสื่นโครงงาน -->
+            <section class="form-section">
+                <h3>ระบุข้อมูลยื่นโครงงาน</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="submission-date">ระบุวันส่งข้อมูล</label>
+                        <input type="date" id="submission-date" name="submission-date">
+                    </div>
+                </div>
+            </section>
+
+            <!-- ไฟล์แนบไฟล์ -->
+            <section class="form-section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="attachment">ไฟล์แนบไฟล์</label>
+                        <div class="file-upload">
+                            <input type="file" id="attachment" name="attachment" accept=".pdf,.docx,.txt" multiple>
+                            <div class="upload-placeholder">
+                                <span>📎</span>
+                                <p>Click to upload</p>
+                                <div class="file-types">
+                                    <span style="color: #999; font-size: 12px;">.pdf, .docx, .txt</span>
+                                   
+                                    <span style="color: #999; font-size: 12px;">• 10 MB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ปุ่มส่ง -->
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">ส่งข้อมูล</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="navigation.js"></script>
+</body>
+</html>

@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อัพโหลดเอกสารโปรเจค - Student Portal</title>
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            color: #333;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow-x: hidden;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .user-role {
+            background-color: #6f42c1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Existing Documents Section */
+        .documents-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 24px;
+        }
+
+        /* Table Controls */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .entries-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .entries-control select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .entries-control select:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.1);
+        }
+        
+        .search-control input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 250px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: white;
+        }
+        
+        .search-control input:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.1);
+        }
+        
+        .search-control input::placeholder {
+            color: #999;
+        }
+
+        /* Data Table with Horizontal Scrolling */
+        .data-table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .data-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .data-table th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .data-table td {
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .progress-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            min-width: 60px;
+            display: inline-block;
+        }
+
+        .progress-0 { background-color: #f8d7da; color: #721c24; }
+        .progress-60 { background-color: #fff3cd; color: #856404; }
+        .progress-100 { background-color: #d1ecf1; color: #0c5460; }
+
+        .download-btn {
+            background-color: #6f42c1;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #5a359a;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px dashed #6f42c1;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 2px dashed #dee2e6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #6f42c1;
+            background-color: #f8f9fa;
+        }
+
+        .upload-area.drag-over {
+            border-color: #6f42c1;
+            background-color: #e3f2fd;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #6f42c1;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .upload-subtext {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background-color: #6f42c1;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 15px;
+        }
+
+        .upload-btn:hover {
+            background-color: #5a359a;
+        }
+
+        .file-types {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 15px;
+        }
+
+        /* Selected Files */
+        .selected-files {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            font-size: 20px;
+        }
+
+        .file-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .remove-file {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .remove-file:hover {
+            background-color: #c82333;
+        }
+
+        /* Submit Button */
+        .submit-section {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        .submit-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            background-color: white;
+            color: #6c757d;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 40px;
+        }
+
+        .pagination button:hover {
+            background-color: #e9ecef;
+        }
+
+        .pagination button.active {
+            background-color: #6f42c1;
+            color: white;
+            border-color: #6f42c1;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Data Table Mobile Card Layout */
+        .table-card-view {
+            display: none;
+        }
+
+        .card-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            padding: 20px;
+            border-left: 4px solid #6f42c1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 24px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .card-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .card-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-value {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Enhanced Responsive Design */
+        /* Enhanced Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                margin: 15px;
+                padding: 20px;
+                border-radius: 8px;
+            }
+            
+            .search-control input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 6px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .search-control input {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .entries-control {
+                justify-content: flex-start;
+            }
+            
+            /* Table responsive improvements - Keep table visible on all screen sizes */
+            .data-table-wrapper {
+                display: block;
+                margin-bottom: 15px;
+            }
+            
+            .data-table {
+                min-width: 600px;
+                font-size: 12px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+                font-size: 12px;
+            }
+            
+            /* Hide card view - use table scrolling instead */
+            .table-card-view {
+                display: none;
+            }
+            
+            .upload-area {
+                padding: 20px 15px;
+            }
+            
+            .upload-icon {
+                font-size: 36px;
+            }
+            
+            .upload-text {
+                font-size: 16px;
+            }
+            
+            .upload-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .file-item {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .file-info {
+                justify-content: center;
+            }
+            
+            .submit-btn {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                padding: 12px;
+                border-radius: 4px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+            }
+            
+            .table-controls {
+                gap: 12px;
+            }
+            
+            .entries-control {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .entries-control span {
+                font-size: 14px;
+            }
+            
+            .entries-control select {
+                padding: 8px 12px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 120px;
+            }
+            
+            .search-control input {
+                padding: 10px 15px;
+                border-radius: 25px;
+            }
+            
+            .data-table {
+                min-width: 500px;
+                font-size: 11px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 6px 4px;
+                font-size: 11px;
+            }
+            
+            .progress-badge {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+            
+            .download-btn {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+            
+            .upload-area {
+                padding: 15px 10px;
+            }
+            
+            .upload-icon {
+                font-size: 32px;
+            }
+            
+            .upload-text {
+                font-size: 14px;
+            }
+            
+            .upload-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+            
+            .file-item {
+                padding: 8px 12px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                padding: 14px 20px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                margin: 2px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 16px;
+                line-height: 1.3;
+            }
+            
+            .section-title {
+                font-size: 14px;
+            }
+            
+            .data-table {
+                min-width: 450px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 4px 3px;
+                font-size: 10px;
+            }
+            
+            .entries-control select {
+                max-width: 100px;
+                font-size: 14px;
+            }
+            
+            .search-control input {
+                padding: 8px 12px;
+            }
+            
+            .progress-badge {
+                padding: 2px 6px;
+                font-size: 9px;
+            }
+            
+            .download-btn {
+                padding: 3px 6px;
+                font-size: 9px;
+            }
+            
+            .upload-icon {
+                font-size: 28px;
+            }
+            
+            .upload-text {
+                font-size: 12px;
+            }
+        }
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            /* Navigation Mobile */
+            .nav-container {
+                padding: 0 15px;
+                height: 70px;
+            }
+            
+            .nav-toggle {
+                display: block;
+                order: 2;
+            }
+            
+            .nav-brand {
+                order: 1;
+                flex: 1;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(to right, #6f42c1, #8e44ad);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                margin: 0;
+                gap: 0;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 15px;
+                margin: 5px 0;
+                border-radius: 8px;
+                background-color: rgba(255, 255, 255, 0.1);
+                min-width: auto;
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+                font-size: 14px;
+            }
+            
+            .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+            
+            .nav-user {
+                display: none;
+                order: 3;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .search-control input {
+                width: 100%;
+            }
+            
+            /* Table responsive improvements - Keep table visible on all screen sizes */
+            .data-table-wrapper {
+                display: block;
+                margin-bottom: 15px;
+            }
+            
+            .data-table {
+                min-width: 600px;
+                font-size: 12px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+                font-size: 12px;
+            }
+            
+            /* Hide card view - use table scrolling instead */
+            .table-card-view {
+                display: none;
+            }
+            
+            .upload-area {
+                padding: 20px 15px;
+            }
+            
+            .upload-icon {
+                font-size: 36px;
+            }
+            
+            .upload-text {
+                font-size: 16px;
+            }
+            
+            .upload-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .file-item {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .file-info {
+                justify-content: center;
+            }
+            
+            .submit-btn {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+            }
+            
+            .data-table {
+                font-size: 12px;
+            }
+            
+            .upload-area {
+                padding: 15px 10px;
+            }
+            
+            .upload-text {
+                font-size: 14px;
+            }
+            
+            .upload-subtext {
+                font-size: 12px;
+            }
+            
+            .upload-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+            
+            .submit-btn {
+                padding: 10px 25px;
+                font-size: 13px;
+            }
+            
+            .file-types {
+                font-size: 11px;
+            }
+            
+            .pagination button {
+                padding: 6px 8px;
+                font-size: 12px;
+                min-width: 35px;
+            }
+            
+            .card-content {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .entries-control,
+            .search-control {
+                font-size: 14px;
+            }
+            
+            .entries-control select,
+            .search-control input {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                margin: 2px;
+                padding: 8px;
+            }
+            
+            .nav-container {
+                padding: 0 10px;
+                height: 60px;
+            }
+            
+            .nav-brand .brand-text {
+                display: none;
+            }
+            
+            .nav-brand {
+                font-size: 18px;
+            }
+            
+            .page-title {
+                font-size: 16px;
+            }
+            
+            .upload-icon {
+                font-size: 28px;
+            }
+            
+            .upload-text {
+                font-size: 13px;
+            }
+            
+            .card-item {
+                padding: 15px;
+            }
+            
+            .card-title {
+                font-size: 14px;
+            }
+            
+            .nav-link {
+                font-size: 13px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon">🎓</span>
+                <span class="brand-text">Student Portal</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="student-dashboard.html" class="nav-link">
+                    <span class="nav-icon">👤</span>
+                    แบบฟอร์มการนำเสนอโครงงาน
+                </a>
+                <a href="student-courses.html" class="nav-link">
+                    <span class="nav-icon">📚</span>
+                    ข้อมูลนักศึกษา
+                </a>
+               
+                <a href="project-progress.html" class="nav-link">
+                    <span class="nav-icon">📈</span>
+                    รายงานความก้าวหน้า
+                </a>
+                <a href="project-exam.html" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    ยื่นสอบโปรเจค
+                </a>
+                <a href="BookanAppointment.html" class="nav-link">
+                    <span class="nav-icon">📆</span>
+                    กำหนดการสอบโปรเจค
+                </a>
+                <a href="project-upload.html" class="nav-link active">
+                    <span class="nav-icon">📁</span>
+                    อัพโหลดเอกสาร
+                </a>
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name">นักศึกษา</span>
+                 
+                </div>
+                <a href="index.html" class="nav-logout">
+                    <span class="nav-icon">🚪</span>
+                    ออกจากระบบ
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">อัพโหลดเอกสารโปรเจค</h1>
+         
+        </div>
+
+        <!-- Existing Documents Section -->
+        <div class="documents-section">
+            <h2 class="section-title">
+                <span class="section-icon">📄</span>
+                เอกสารที่อัพโหลดแล้ว
+            </h2>
+
+            <div class="table-controls">
+                <div class="entries-control">
+                    <span>Show</span>
+                    <select>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span>entries</span>
+                </div>
+                
+                <div class="search-control">
+                    <input type="text" placeholder="Search...">
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>หัวข้อ</th>
+                            <th>หัวข้อ</th>
+                            <th>สัปดาห์ที่</th>
+                            <th>เปอร์เซ็นต์</th>
+                            <th>วันที่ส่งเอกสาร</th>
+                            <th>ประเภทเอกสาร</th>
+                            <th>ไฟล์แนบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>📝</td>
+                            <td>Hat</td>
+                            <td>1</td>
+                            <td><span class="progress-badge progress-0">0%</span></td>
+                            <td>13/05/2022</td>
+                            <td>สถานะ</td>
+                            <td><a href="#" class="download-btn">test.pdf</a></td>
+                        </tr>
+                        <tr>
+                            <td>💻</td>
+                            <td>Laptop</td>
+                            <td>2</td>
+                            <td><span class="progress-badge progress-60">60%</span></td>
+                            <td>22/05/2022</td>
+                            <td>พัฒนา</td>
+                            <td><a href="#" class="download-btn">test.pdf</a></td>
+                        </tr>
+                        <tr>
+                            <td>📱</td>
+                            <td>Phone</td>
+                            <td>9</td>
+                            <td><span class="progress-badge progress-100">100%</span></td>
+                            <td>15/06/2022</td>
+                            <td>พัฒนา</td>
+                            <td><a href="#" class="download-btn">test.pdf</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="table-card-view">
+                <div class="card-item">
+                    <div class="card-header">
+                        <span class="card-icon">📝</span>
+                        <span class="card-title">Hat</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-field">
+                            <span class="card-label">สัปดาห์ที่</span>
+                            <span class="card-value">1</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">เปอร์เซ็นต์</span>
+                            <span class="card-value"><span class="progress-badge progress-0">0%</span></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">วันที่ส่งเอกสาร</span>
+                            <span class="card-value">13/05/2022</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">ประเภทเอกสาร</span>
+                            <span class="card-value">สถานะ</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span style="font-size: 14px; color: #6c757d;">ไฟล์แนบ</span>
+                        <a href="#" class="download-btn">test.pdf</a>
+                    </div>
+                </div>
+                
+                <div class="card-item">
+                    <div class="card-header">
+                        <span class="card-icon">💻</span>
+                        <span class="card-title">Laptop</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-field">
+                            <span class="card-label">สัปดาห์ที่</span>
+                            <span class="card-value">2</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">เปอร์เซ็นต์</span>
+                            <span class="card-value"><span class="progress-badge progress-60">60%</span></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">วันที่ส่งเอกสาร</span>
+                            <span class="card-value">22/05/2022</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">ประเภทเอกสาร</span>
+                            <span class="card-value">พัฒนา</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span style="font-size: 14px; color: #6c757d;">ไฟล์แนบ</span>
+                        <a href="#" class="download-btn">test.pdf</a>
+                    </div>
+                </div>
+                
+                <div class="card-item">
+                    <div class="card-header">
+                        <span class="card-icon">📱</span>
+                        <span class="card-title">Phone</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-field">
+                            <span class="card-label">สัปดาห์ที่</span>
+                            <span class="card-value">9</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">เปอร์เซ็นต์</span>
+                            <span class="card-value"><span class="progress-badge progress-100">100%</span></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">วันที่ส่งเอกสาร</span>
+                            <span class="card-value">15/06/2022</span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">ประเภทเอกสาร</span>
+                            <span class="card-value">พัฒนา</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span style="font-size: 14px; color: #6c757d;">ไฟล์แนบ</span>
+                        <a href="#" class="download-btn">test.pdf</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button disabled>Previous</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>Next</button>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <h2 class="section-title">
+                <span class="section-icon">⬆️</span>
+                อัพโหลดเอกสารใหม่
+            </h2>
+
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Click to upload</div>
+                <div class="upload-subtext">หรือลากไฟล์มาวางที่นี่</div>
+                <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.txt,.jpg,.png">
+                <button type="button" class="upload-btn">เลือกไฟล์</button>
+                <div class="file-types">
+                    รองรับไฟล์: PDF, DOCX, TXT, JPG, PNG (สูงสุด 10 MB)
+                </div>
+            </div>
+
+            <div id="selectedFiles" class="selected-files" style="display: none;">
+                <h3>ไฟล์ที่เลือก:</h3>
+                <div id="fileList"></div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section">
+            <button type="button" class="submit-btn" id="submitBtn" disabled>ยืนยันการอัพโหลด</button>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Navigation Toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const navToggle = document.querySelector('.nav-toggle');
+            
+            if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // File upload functionality
+        const fileInput = document.getElementById('fileInput');
+        const selectedFiles = document.getElementById('selectedFiles');
+        const fileList = document.getElementById('fileList');
+        const submitBtn = document.getElementById('submitBtn');
+        const uploadArea = document.querySelector('.upload-area');
+        let selectedFilesArray = [];
+
+        // Click to upload
+        fileInput.addEventListener('change', function(e) {
+            handleFiles(e.target.files);
+        });
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                // Check file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('ไฟล์ ' + file.name + ' มีขนาดใหญ่เกิน 10MB');
+                    return;
+                }
+
+                // Check file type
+                const allowedTypes = ['.pdf', '.doc', '.docx', '.txt', '.jpg', '.jpeg', '.png'];
+                const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+                if (!allowedTypes.includes(fileExtension)) {
+                    alert('ไฟล์ ' + file.name + ' ไม่ใช่ประเภทที่รองรับ');
+                    return;
+                }
+
+                // Add to selected files if not already exists
+                if (!selectedFilesArray.find(f => f.name === file.name)) {
+                    selectedFilesArray.push(file);
+                }
+            });
+
+            updateFileList();
+        }
+
+        function updateFileList() {
+            if (selectedFilesArray.length === 0) {
+                selectedFiles.style.display = 'none';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            selectedFiles.style.display = 'block';
+            fileList.innerHTML = '';
+            submitBtn.disabled = false;
+
+            selectedFilesArray.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileInfo = document.createElement('div');
+                fileInfo.className = 'file-info';
+                
+                const fileIcon = document.createElement('div');
+                fileIcon.className = 'file-icon';
+                fileIcon.textContent = getFileIcon(file.name);
+                
+                const fileDetails = document.createElement('div');
+                fileDetails.className = 'file-details';
+                
+                const fileName = document.createElement('div');
+                fileName.className = 'file-name';
+                fileName.textContent = file.name;
+                
+                const fileSize = document.createElement('div');
+                fileSize.className = 'file-size';
+                fileSize.textContent = formatFileSize(file.size);
+                
+                fileDetails.appendChild(fileName);
+                fileDetails.appendChild(fileSize);
+                
+                fileInfo.appendChild(fileIcon);
+                fileInfo.appendChild(fileDetails);
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-file';
+                removeBtn.textContent = 'ลบ';
+                removeBtn.onclick = () => removeFile(index);
+                
+                fileItem.appendChild(fileInfo);
+                fileItem.appendChild(removeBtn);
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(index) {
+            selectedFilesArray.splice(index, 1);
+            updateFileList();
+        }
+
+        function getFileIcon(fileName) {
+            const extension = fileName.split('.').pop().toLowerCase();
+            switch(extension) {
+                case 'pdf': return '📄';
+                case 'doc':
+                case 'docx': return '📝';
+                case 'txt': return '📃';
+                case 'jpg':
+                case 'jpeg':
+                case 'png': return '🖼️';
+                default: return '📁';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Submit functionality
+        submitBtn.addEventListener('click', function() {
+            if (selectedFilesArray.length === 0) {
+                alert('กรุณาเลือกไฟล์ที่ต้องการอัพโหลด');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'กำลังอัพโหลด...';
+
+            // Simulate upload process
+            setTimeout(() => {
+                alert('อัพโหลดเอกสารเรียบร้อยแล้ว!');
+                
+                // Reset form
+                selectedFilesArray = [];
+                fileInput.value = '';
+                updateFileList();
+                
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'ยืนยันการอัพโหลด';
+                
+                // Refresh page to show new documents
+                location.reload();
+            }, 2000);
+        });
+
+        // Search functionality
+        document.querySelector('.search-control input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            // Search in table view
+            const tableRows = document.querySelectorAll('.data-table tbody tr');
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+            
+            // Search in card view
+            const cardItems = document.querySelectorAll('.card-item');
+            cardItems.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Entries per page functionality
+        document.querySelector('.entries-control select').addEventListener('change', function(e) {
+            console.log('Show ' + e.target.value + ' entries');
+            // Implement pagination logic here
+        });
+
+        // Responsive table handling
+        function handleResize() {
+            const tableWrapper = document.querySelector('.data-table-wrapper');
+            const cardView = document.querySelector('.table-card-view');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (window.innerWidth <= 900) {
+                tableWrapper.style.display = 'none';
+                cardView.style.display = 'block';
+            } else {
+                tableWrapper.style.display = 'block';
+                cardView.style.display = 'none';
+            }
+            
+            // Close mobile menu on resize
+            if (window.innerWidth > 768) {
+                navMenu.classList.remove('active');
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', handleResize);
+        
+        // Initial check
+        document.addEventListener('DOMContentLoaded', function() {
+            handleResize();
+            
+            // Add click handler for nav links in mobile
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        const navMenu = document.getElementById('navMenu');
+                        navMenu.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- JavaScript Files -->
+    <script src="navigation.js"></script>
+</body>
+</html>

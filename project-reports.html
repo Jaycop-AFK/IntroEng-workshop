@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายงานความก้าวหน้าในโครงงาน - Staff Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="staff-navigation.css">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            margin: 0;
+            color: #333;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #F15A24, #FF7A45);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(241, 90, 36, 0.3);
+            position: relative;
+        }
+        
+        .page-header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            margin: 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .roles-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        /* Progress Reports Section */
+        .reports-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #F15A24;
+            margin: 0;
+        }
+        
+        .show-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .show-controls select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .search-box {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            color: #333;
+            background: #fff;
+        }
+        
+        .search-input::placeholder {
+            color: #999;
+            opacity: 1;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #F15A24;
+            box-shadow: 0 0 5px rgba(241, 90, 36, 0.3);
+        }
+        
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            min-width: 900px; /* Force scroll on smaller screens */
+        }
+        
+        .reports-table th {
+            background: #F15A24;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .reports-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
+        }
+        
+        .reports-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .checkbox-cell {
+            width: 40px;
+            text-align: center;
+        }
+        
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #F15A24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .student-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .student-details h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            max-width: 100px;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .file-link {
+            color: #F15A24;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 5px;
+        }
+        
+        .pagination .page-btn {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .pagination .page-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .pagination .page-btn.active {
+            background: #F15A24;
+            color: white;
+            border-color: #F15A24;
+        }
+        
+        /* Feedback Form Section */
+        .feedback-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .feedback-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #F15A24;
+            box-shadow: 0 0 8px rgba(241, 90, 36, 0.3);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: #F15A24;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            background: #E14A1C;
+        }
+        
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .main-container {
+                max-width: 95%;
+                margin: 15px auto;
+            }
+            
+            .page-header {
+                position: relative;
+            }
+            
+            .roles-info {
+                position: static;
+                display: block;
+                margin: 15px auto 0;
+                text-align: center;
+                width: fit-content;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .page-header {
+                padding: 25px 20px;
+                position: relative;
+            }
+            
+            .page-header h1 {
+                font-size: 2em;
+            }
+            
+            .roles-info {
+                position: static;
+                display: inline-block;
+                margin-top: 15px;
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 5px;
+                padding: 10px;
+            }
+            
+            .page-header {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8em;
+                margin-bottom: 8px;
+                line-height: 1.2;
+            }
+            
+            .page-header p {
+                font-size: 1em;
+                line-height: 1.4;
+            }
+            
+            .roles-info {
+                position: static;
+                display: block;
+                margin: 15px auto 0;
+                text-align: center;
+                width: fit-content;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.2em;
+                text-align: center;
+            }
+            
+            .show-controls {
+                justify-content: center;
+            }
+            
+            .search-box {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                max-width: 100%;
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+            
+            /* Table with horizontal scroll */
+            .reports-section {
+                margin-bottom: 20px;
+                border-radius: 12px;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 0 0 12px 12px;
+            }
+            
+            .reports-table {
+                font-size: 14px;
+                min-width: 700px; /* Force horizontal scroll */
+            }
+            
+            .reports-table th,
+            .reports-table td {
+                padding: 10px 8px;
+                white-space: nowrap;
+            }
+            
+            .reports-table th:first-child,
+            .reports-table td:first-child {
+                min-width: 50px; /* Checkbox column */
+            }
+            
+            .reports-table th:nth-child(2),
+            .reports-table td:nth-child(2) {
+                min-width: 150px; /* Student info column */
+            }
+            
+            .student-avatar {
+                width: 30px;
+                height: 30px;
+                margin-right: 10px;
+                font-size: 13px;
+            }
+            
+            .student-details h4 {
+                font-size: 14px;
+                margin-bottom: 2px;
+            }
+            
+            .student-details p {
+                font-size: 12px;
+            }
+            
+            .progress-bar-container {
+                max-width: 80px;
+            }
+            
+            .feedback-form {
+                padding: 20px 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                margin: 2px;
+                padding: 8px;
+            }
+            
+            .page-header {
+                padding: 15px 10px;
+                margin-bottom: 15px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5em;
+            }
+            
+            .section-header {
+                padding: 10px 15px;
+            }
+            
+            .search-box {
+                padding: 10px 15px;
+            }
+            
+            .reports-table {
+                min-width: 600px;
+                font-size: 12px;
+            }
+            
+            .reports-table th,
+            .reports-table td {
+                padding: 8px 6px;
+            }
+            
+            .student-avatar {
+                width: 25px;
+                height: 25px;
+                font-size: 11px;
+                margin-right: 8px;
+            }
+            
+            .student-details h4 {
+                font-size: 12px;
+            }
+            
+            .student-details p {
+                font-size: 10px;
+            }
+            
+            .progress-bar-container {
+                max-width: 60px;
+            }
+            
+            .feedback-form {
+                padding: 15px 10px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .pagination {
+                padding: 15px 10px;
+                gap: 3px;
+            }
+            
+            .pagination .page-btn {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .page-header h1 {
+                font-size: 1.3em;
+            }
+            
+            .reports-table {
+                min-width: 550px;
+                font-size: 11px;
+            }
+            
+            .reports-table th,
+            .reports-table td {
+                padding: 6px 4px;
+            }
+            
+            .student-avatar {
+                width: 22px;
+                height: 22px;
+                font-size: 10px;
+                margin-right: 6px;
+            }
+            
+            .progress-bar-container {
+                max-width: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+               <span class="brand-icon">
+                    <img src="fitm.png" alt="kmutnb logo" style="width:80px;height:50px;vertical-align:middle;">
+                </span>
+          
+            </div>
+            
+            <div class="nav-menu">
+                <a href="staff-dashboard.html" class="nav-link">
+                    <span class="nav-icon">📊</span>
+                    จัดการข้อมูลนักศึกษา
+                </a>
+             
+                <a href="exam-management.html" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    สร้างการสอบออนไลน์
+                </a>
+                
+                <a href="project-reports.html" class="nav-link active">
+                    <span class="nav-icon">📈</span>
+                    รายงานความก้าวหน้า
+                </a>
+                <a href="finalExam-management.html" class="nav-link">
+                    <span class="nav-icon">📄</span>
+                    คำขอยื่นสอบ
+                </a>
+              
+                
+               
+                 <a href="assessment.html" class="nav-link">
+                    <span class="nav-icon">📝</span>
+                    คะแนนสอบ
+                </a>
+                 <a href="grading.html" class="nav-link">
+                    <span class="nav-icon">📝</span>
+                    ลงนาม
+                </a>
+                <a href="project-documents.html" class="nav-link">
+                    <span class="nav-icon">📁</span>
+                    เอกสารโปรเจค
+                </a>
+                
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name">อาจารย์สมชาย</span>
+                    
+                </div>
+                <a href="index.html" class="nav-logout">
+                    <span class="nav-icon">🚪</span>
+                    ออกจากระบบ
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header" style="position: relative;">
+            
+            <h1>รายงานความก้าวหน้าในโครงงาน</h1>
+            <p>ติดตามและประเมินความก้าวหน้าของนักศึกษา</p>
+        </div>
+
+        <!-- Progress Reports Section -->
+        <div class="reports-section">
+            <div class="section-header">
+                <h2 class="section-title">รายงานความก้าวหน้าในโครงงาน</h2>
+                <div class="show-controls">
+                    <span>Show</span>
+                    <select>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span>entries</span>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search...">
+            </div>
+
+            <div class="table-container">
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">
+                                <input type="checkbox">
+                            </th>
+                            <th>หัวข้อรายงาน</th>
+                            <th>สัปดาห์ที่</th>
+                            <th>เปอร์เซ็น</th>
+                            <th>รายละเอียด</th>
+                            <th>ประเภทโครงงาน</th>
+                           
+                            <th>ไฟล์แนบ</th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="checkbox-cell">
+                            <input type="checkbox">
+                        </td>
+                        <td>
+                            <div class="student-info">
+                                <div class="student-avatar">H</div>
+                                <div class="student-details">
+                                    <h4>ระบบตรวจสอบเอกสาร</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 0%"></div>
+                                <div class="progress-text">0%</div>
+                            </div>
+                        </td>
+                        <td>พัฒนาระบบส่วนการจัดการข้อมูลผู้ป่วยโดยใช้ React ในการสร้าง</td>
+                        <td>สหกิจ</td>
+                        <td><a href="#" class="file-link">test.pdf</a></td>
+                    </tr>
+                    <tr>
+                        <td class="checkbox-cell">
+                            <input type="checkbox">
+                        </td>
+                        <td>
+                            <div class="student-info">
+                                <div class="student-avatar">L</div>
+                                <div class="student-details">
+                                    <h4>ระบบจัดการข้อมูล</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>5</td>
+                        <td>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 45%"></div>
+                                <div class="progress-text">45%</div>
+                            </div>
+                        </td>
+                        <td>แก้ไขระบบการจัดการข้อมูลผู้ป่วย</td>
+                        <td>โครงงานพิเศษ</td>
+                        <td><a href="#" class="file-link">test.pdf</a></td>
+                    </tr>
+                    <tr>
+                        <td class="checkbox-cell">
+                            <input type="checkbox" checked>
+                        </td>
+                        <td>
+                            <div class="student-info">
+                                <div class="student-avatar">P</div>
+                                <div class="student-details">
+                                    <h4>smartFarm</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>6</td>
+                        <td>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 60%"></div>
+                                <div class="progress-text">60%</div>
+                            </div>
+                        </td>
+                        <td>ทำโมดูลรดน้ำอัตโนมัติ</td>
+                        <td>สหกิจ</td>
+                        <td><a href="#" class="file-link">test.pdf</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="pagination">
+                <a href="#" class="page-btn">Previous</a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">Next</a>
+            </div>
+        </div>
+
+        <!-- Feedback Form Section -->
+        <div class="feedback-section">
+            <div class="section-header">
+                <h2 class="section-title">ความคิดเห็น ข้อเสนอแนะ</h2>
+            </div>
+            
+            <form class="feedback-form">
+                <div class="form-group">
+                    <label>ความคิดเห็น</label>
+                    <input type="text" placeholder="ความคิดเห็น">
+                </div>
+
+                <div class="form-group">
+                    <label>ความเห็นใหม่ใครใจรูปแบบใหม่ด้อยคืน</label>
+                    <textarea placeholder="ความเห็นใหม่ใครใจรูปแบบใหม่ด้อยคืน"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>ความคิดเห็น ข้อปรี่ปานา (ความแต่กแต่งกให้ใหม่กข้น)</label>
+                    <textarea placeholder="ความคิดเห็น"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">บันทึกข้อมูล</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="navigation.js"></script>
+</body>
+</html>

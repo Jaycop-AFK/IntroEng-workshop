@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อัพโหลดเอกสารโปรเจค - Student Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            color: #333;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow-x: hidden;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .user-role {
+            background-color: #6f42c1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Existing Documents Section */
+        .documents-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 24px;
+        }
+
+        /* Table Controls */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .entries-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .entries-control select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .entries-control select:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.1);
+        }
+        
+        .search-control input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 250px;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: white;
+        }
+        
+        .search-control input:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.1);
+        }
+        
+        .search-control input::placeholder {
+            color: #999;
+        }
+
+        /* Data Table with Horizontal Scrolling */
+        .data-table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .data-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .data-table th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .data-table td {
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .progress-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            min-width: 60px;
+            display: inline-block;
+        }
+
+        .progress-0 { background-color: #f8d7da; color: #721c24; }
+        .progress-60 { background-color: #fff3cd; color: #856404; }
+        .progress-100 { background-color: #d1ecf1; color: #0c5460; }
+
+        .download-btn {
+            background-color: #6f42c1;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #5a359a;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: #6c757d;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: #f8f9fa;
+        }
+
+        .pagination button.active {
+            background-color: #6f42c1;
+            color: white;
+            border-color: #6f42c1;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px dashed #6f42c1;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 2px dashed #dee2e6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #6f42c1;
+            background-color: #f8f9fa;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #495057;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .upload-subtext {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .file-types {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .file-type {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .upload-btn {
+            background-color: #6f42c1;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: #5a359a;
+        }
+
+        /* File List */
+        .file-list {
+            margin-top: 30px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-icon {
+            font-size: 24px;
+            color: #6f42c1;
+        }
+
+        .file-details h4 {
+            margin: 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .file-details p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: #6c757d;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #f8f9fa;
+        }
+
+        .action-btn.delete {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .action-btn.delete:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Submit Section */
+        .submit-section {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #6f42c1 0%, #9c27b0 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(111, 66, 193, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                margin: 15px;
+                padding: 20px;
+                border-radius: 8px;
+            }
+            
+            .search-control input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 6px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .search-control input {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .entries-control {
+                justify-content: flex-start;
+            }
+            
+            .data-table {
+                min-width: 600px;
+                font-size: 12px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+                font-size: 12px;
+            }
+            
+            .upload-area {
+                padding: 20px 15px;
+            }
+            
+            .upload-icon {
+                font-size: 36px;
+            }
+            
+            .upload-text {
+                font-size: 16px;
+            }
+            
+            .file-item {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .file-info {
+                justify-content: center;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                padding: 14px 20px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                padding: 12px;
+                border-radius: 4px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+            }
+            
+            .table-controls {
+                gap: 12px;
+            }
+            
+            .entries-control {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .entries-control span {
+                font-size: 14px;
+            }
+            
+            .entries-control select {
+                padding: 8px 12px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 120px;
+            }
+            
+            .search-control input {
+                padding: 10px 15px;
+                border-radius: 25px;
+            }
+            
+            .data-table {
+                min-width: 500px;
+                font-size: 11px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 6px 4px;
+                font-size: 11px;
+            }
+            
+            .progress-badge {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+            
+            .download-btn {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+            
+            .upload-area {
+                padding: 15px 10px;
+            }
+            
+            .upload-icon {
+                font-size: 32px;
+            }
+            
+            .upload-text {
+                font-size: 14px;
+            }
+            
+            .file-item {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                margin: 2px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 16px;
+                line-height: 1.3;
+            }
+            
+            .section-title {
+                font-size: 14px;
+            }
+            
+            .data-table {
+                min-width: 450px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 4px 3px;
+                font-size: 10px;
+            }
+            
+            .entries-control select {
+                max-width: 100px;
+                font-size: 14px;
+            }
+            
+            .search-control input {
+                padding: 8px 12px;
+            }
+            
+            .progress-badge {
+                padding: 2px 6px;
+                font-size: 9px;
+            }
+            
+            .download-btn {
+                padding: 3px 6px;
+                font-size: 9px;
+            }
+            
+            .upload-icon {
+                font-size: 28px;
+            }
+            
+            .upload-text {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="fitm.png" alt="kmutnb logo" style="width:80px;height:50px;vertical-align:middle;">
+               
+            </div>
+            
+            <div class="nav-menu">
+                <a href="student-dashboard.html" class="nav-link">
+                    <span class="nav-icon">👤</span>
+                    แบบฟอร์มการนำเสนอโครงงาน
+                </a>
+                <a href="student-courses.html" class="nav-link">
+                    <span class="nav-icon">📚</span>
+                    ข้อมูลนักศึกษา
+                </a>
+               
+                <a href="project-progress.html" class="nav-link">
+                    <span class="nav-icon">📈</span>
+                    รายงานความก้าวหน้า
+                </a>
+                <a href="project-exam.html" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    ยื่นสอบโปรเจค
+                </a>
+                <a href="BookanAppointment.html" class="nav-link">
+                    <span class="nav-icon">📆</span>
+                    กำหนดการสอบโปรเจค
+                </a>
+                <a href="project-upload.html" class="nav-link active">
+                    <span class="nav-icon">📁</span>
+                    อัพโหลดเอกสาร
+                </a>
+            </div>
+            
+            <div class="nav-user">
+                <div class="user-info">
+                    <span class="user-name">นักศึกษา</span>
+                 
+                </div>
+                <a href="index.html" class="nav-logout">
+                    <span class="nav-icon">🚪</span>
+                    ออกจากระบบ
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">อัพโหลดเอกสารโปรเจค</h1>
+        </div>
+
+        <!-- Existing Documents Section -->
+        <div class="documents-section">
+            <h2 class="section-title">
+                <span class="section-icon">📄</span>
+                เอกสารที่อัพโหลดแล้ว
+            </h2>
+
+            <div class="table-controls">
+                <div class="entries-control">
+                    <span>Show</span>
+                    <select>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span>entries</span>
+                </div>
+                
+                <div class="search-control">
+                    <input type="text" placeholder="Search...">
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>หัวข้อ</th>
+                            <th>หัวข้อ</th>
+                            <th>สัปดาห์ที่</th>
+                            <th>เปอร์เซ็นต์</th>
+                            <th>วันที่ส่งเอกสาร</th>
+                            <th>ประเภทเอกสาร</th>
+                            <th>ไฟล์แนบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>📝</td>
+                            <td>Hat</td>
+                            <td>1</td>
+                            <td><span class="progress-badge progress-0">0%</span></td>
+                            <td>13/05/2022</td>
+                            <td>สถานะ</td>
+                            <td><a href="#" class="download-btn">test.pdf</a></td>
+                        </tr>
+                        <tr>
+                            <td>💻</td>
+                            <td>Laptop</td>
+                            <td>2</td>
+                            <td><span class="progress-badge progress-60">60%</span></td>
+                            <td>22/05/2022</td>
+                            <td>พัฒนา</td>
+                            <td><a href="#" class="download-btn">test.pdf</a></td>
+                        </tr>
+                        <tr>
+                            <td>📱</td>
+                            <td>Phone</td>
+                            <td>9</td>
+                            <td><span class="progress-badge progress-100">100%</span></td>
+                            <td>15/06/2022</td>
+                            <td>พัฒนา</td>
+                            <td><a href="#" class="download-btn">test.pdf</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button disabled>Previous</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>Next</button>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <h2 class="section-title">
+                <span class="section-icon">📁</span>
+                อัพโหลดเอกสารใหม่
+            </h2>
+
+            <div class="upload-area" onclick="document.getElementById('file-input').click();">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">คลิกเพื่ออัพโหลดไฟล์</div>
+                <div class="upload-subtext">หรือลากไฟล์มาวางที่นี่</div>
+                
+                <div class="file-types">
+                    <span class="file-type">PDF</span>
+                    <span class="file-type">DOCX</span>
+                    <span class="file-type">TXT</span>
+                    <span class="file-type">สูงสุด 10MB</span>
+                </div>
+                
+                <button class="upload-btn" type="button">เลือกไฟล์</button>
+            </div>
+            
+            <input type="file" id="file-input" style="display: none;" multiple accept=".pdf,.docx,.txt">
+
+            <!-- File List -->
+            <div class="file-list" id="file-list">
+                <!-- Files will be added here dynamically -->
+                <div class="file-item">
+                    <div class="file-info">
+                        <div class="file-icon">📄</div>
+                        <div class="file-details">
+                            <h4>example-document.pdf</h4>
+                            <p>PDF • 2.5 MB • อัพโหลดเมื่อ 10 นาทีที่แล้ว</p>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a href="#" class="action-btn">ดาวน์โหลด</a>
+                        <button class="action-btn delete">ลบ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section">
+            <button class="submit-btn">ส่งเอกสาร</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="navigation.js"></script>
+    <script>
+        // File upload functionality
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const fileList = document.getElementById('file-list');
+            
+            for (let file of files) {
+                // Create new file item
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-icon">📄</div>
+                        <div class="file-details">
+                            <h4>${file.name}</h4>
+                            <p>${file.type.split('/')[1].toUpperCase()} • ${(file.size / 1024 / 1024).toFixed(1)} MB • อัพโหลดเมื่อเพิ่งเลยนี้</p>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a href="#" class="action-btn">ดาวน์โหลด</a>
+                        <button class="action-btn delete" onclick="this.parentElement.parentElement.remove()">ลบ</button>
+                    </div>
+                `;
+                fileList.appendChild(fileItem);
+            }
+        });
+
+        // Table sorting functionality (placeholder)
+        document.querySelectorAll('.data-table th').forEach(header => {
+            header.addEventListener('click', function() {
+                console.log('Sorting by:', this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>
