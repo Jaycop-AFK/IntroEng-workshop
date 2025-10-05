@@ -28,6 +28,71 @@
         h1, h2, h3, h4, h5, h6, p, span, div, label, input, select, textarea, button {
             font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Sarabun', Arial, sans-serif !important;
         }
+
+        .member-block {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .member-heading {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #2d3a4a;
+        }
+
+        .member-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .member-action-btn {
+            background-color: #1e88e5;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .member-action-btn:disabled {
+            background-color: #b0c4de;
+            cursor: not-allowed;
+        }
+
+        .member-action-btn:hover:not(:disabled) {
+            background-color: #1565c0;
+        }
+
+        .member-limit-note {
+            font-size: 0.9rem;
+            color: #607d8b;
+        }
+
+        .member-block-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+        .member-block-actions .remove-member-btn {
+            background-color: #ef5350;
+        }
+
+        .member-block-actions .remove-member-btn:hover:not(:disabled) {
+            background-color: #d32f2f;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -134,55 +199,79 @@
             <!-- รายชื่อผู้จัดทำ -->
             <section class="form-section">
                 <h3>รายชื่อผู้จัดทำ</h3>
-                
-                <div class="form-row">
-                    <div class="form-group half-width">
-                        <label for="member1-id">ชื่อ-สกุล</label>
-                        <input type="text" id="member1-id" name="member1-id" placeholder="ชื่อ-สกุล">
-                    </div>
-                    <div class="form-group half-width">
-                        <label for="member1-name">รหัสนักศึกษา</label>
-                        <input type="text" id="member1-name" name="member1-name" placeholder="รหัสนักศึกษา">
+
+                <div id="members-container">
+                    <div class="member-block" data-member-index="1">
+                        <h4 class="member-heading">ผู้จัดทำคนที่ 1</h4>
+
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label data-label="fullName" for="member-1-fullName">ชื่อ-สกุล</label>
+                                <input type="text" data-field="fullName" id="member-1-fullName" name="members[0][fullName]" placeholder="ชื่อ-สกุล">
+                            </div>
+                            <div class="form-group half-width">
+                                <label data-label="studentId" for="member-1-studentId">รหัสนักศึกษา</label>
+                                <input type="text" data-field="studentId" id="member-1-studentId" name="members[0][studentId]" placeholder="รหัสนักศึกษา">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label data-label="branch" for="member-1-branch">สาขา</label>
+                                <select data-field="branch" id="member-1-branch" name="members[0][branch]">
+                                    <option value="">เลือกสาขา</option>
+                                    <option value="INET">INET</option>
+                                    <option value="INE">INE</option>
+                                    <option value="ITI">ITI</option>
+                                    <option value="IT">IT</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="member-block-actions">
+                            <button type="button" class="remove-member-btn member-action-btn hidden">ลบผู้จัดทำ</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="member1-branch">สาขา</label>
-                        <select id="member1-branch" name="member1-branch">
-                            <option value="">เลือกสาขา</option>
-                            
-                            <option value="INET">INET</option>
-                            <option value="INET">INE</option>
-                            <option value="ITI">ITI</option>
-                            <option value="ITI">IT</option>
-                        </select>
-                    </div>
+                <div class="member-controls">
+                    <button type="button" id="add-member-btn" class="member-action-btn">เพิ่มผู้จัดทำ</button>
+                    <span class="member-limit-note">เพิ่มได้สูงสุด 4 คน</span>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group half-width">
-                        <label for="member2-id">ชื่อ-สกุล2</label>
-                        <input type="text" id="member2-id" name="member2-id" placeholder="ชื่อ-สกุล2">
-                    </div>
-                    <div class="form-group half-width">
-                        <label for="member2-name">รหัสนักศึกษา2</label>
-                        <input type="text" id="member2-name" name="member2-name" placeholder="รหัสนักศึกษา">
-                    </div>
-                </div>
+                <template id="member-template">
+                    <div class="member-block" data-member-index="">
+                        <h4 class="member-heading">ผู้จัดทำคนที่ X</h4>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="member2-branch">สาขา</label>
-                        <select id="member2-branch" name="member2-branch">
-                            <option value="">เลือกสาขา</option>
-                            <option value="INET">INET</option>
-                            <option value="INET">INE</option>
-                            <option value="ITI">ITI</option>
-                            <option value="ITI">IT</option>
-                        </select>
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label data-label="fullName">ชื่อ-สกุล</label>
+                                <input type="text" data-field="fullName" placeholder="ชื่อ-สกุล">
+                            </div>
+                            <div class="form-group half-width">
+                                <label data-label="studentId">รหัสนักศึกษา</label>
+                                <input type="text" data-field="studentId" placeholder="รหัสนักศึกษา">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label data-label="branch">สาขา</label>
+                                <select data-field="branch">
+                                    <option value="">เลือกสาขา</option>
+                                    <option value="INET">INET</option>
+                                    <option value="INE">INE</option>
+                                    <option value="ITI">ITI</option>
+                                    <option value="IT">IT</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="member-block-actions">
+                            <button type="button" class="remove-member-btn member-action-btn">ลบผู้จัดทำ</button>
+                        </div>
                     </div>
-                </div>
+                </template>
             </section>
 
             <!-- เลือกอาจารย์ที่ปรึกษา -->
@@ -263,6 +352,7 @@
     </div>
 
     <!-- JavaScript Files -->
+    <script src="student-personal-info.js"></script>
     <script src="navigation.js"></script>
 </body>
 </html>
