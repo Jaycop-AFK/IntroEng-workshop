@@ -118,8 +118,34 @@
             transition: all 0.3s ease;
             color: #e65100;
         }
+
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(241, 90, 36, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            color: #e65100;
+            appearance: none;
+            background-image: linear-gradient(45deg, transparent 50%, rgba(241, 90, 36, 0.4) 50%),
+                              linear-gradient(135deg, rgba(241, 90, 36, 0.4) 50%, transparent 50%);
+            background-position: calc(100% - 20px) calc(1.2em), calc(100% - 15px) calc(1.2em);
+            background-size: 5px 5px;
+            background-repeat: no-repeat;
+        }
         
         .form-group input:focus {
+            outline: none;
+            border-color: #f15a24;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(241, 90, 36, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group select:focus {
             outline: none;
             border-color: #f15a24;
             background: rgba(255, 255, 255, 1);
@@ -137,6 +163,12 @@
             flex-direction: column;
             gap: 15px;
             margin-top: 30px;
+        }
+        
+        .form-message {
+            margin-top: 15px;
+            font-size: 14px;
+            min-height: 20px;
         }
         
         .login-btn {
@@ -274,23 +306,101 @@
             <h1>👨‍💼 ล็อกอินบุคลากร</h1>
             <h2>เข้าสู่ระบบจัดการนักศึกษา</h2>
             
-            <form>
+            <form id="staffLoginForm" novalidate>
                 <div class="form-group">
                     <label for="staff-username">ชื่อผู้ใช้</label>
-                    <input type="text" id="staff-username" name="staff-username" placeholder="กรอกชื่อผู้ใช้">
+                    <input type="text" id="staff-username" name="staff-username" placeholder="กรอกชื่อผู้ใช้" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="staff-password">รหัสผ่าน</label>
-                    <input type="password" id="staff-password" name="staff-password" placeholder="กรอกรหัสผ่าน">
+                    <input type="password" id="staff-password" name="staff-password" placeholder="กรอกรหัสผ่าน" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="staff-role">ประเภทผู้ใช้</label>
+                    <select id="staff-role" name="staff-role" required>
+                        <option value="staff">บุคลากร</option>
+                        <option value="advisor">ครูที่ปรึกษา</option>
+                        <option value="instructor">ครูประจำวิชา</option>
+                    </select>
                 </div>
                 
                 <div class="button-group">
-                    <a href="staff-student-management.html" class="login-btn">เข้าสู่ระบบ</a>
+                    <button type="submit" class="login-btn">เข้าสู่ระบบ</button>
                     <button type="button" class="forgot-btn">ลืมรหัสผ่าน?</button>
                 </div>
+                <div class="form-message" id="staffLoginMessage" aria-live="polite"></div>
             </form>
         </div>
     </div>
+    <script>
+        const USER_STORAGE_KEY = 'kms_user';
+        const STAFF_CREDENTIAL = {
+            username: 'tuser123',
+            password: '1234'
+        };
+
+        const STAFF_ROLE_CONFIG = {
+            staff: {
+                label: 'บุคลากร',
+                displayName: 'บุคลากร KMUTNB',
+                redirect: 'staff-student-management.html'
+            },
+            advisor: {
+                label: 'ครูที่ปรึกษา',
+                displayName: 'ครูที่ปรึกษา',
+                redirect: 'staff-student-management.html'
+            },
+            instructor: {
+                label: 'ครูประจำวิชา',
+                displayName: 'ครูประจำวิชา',
+                redirect: 'staff-progress-reports.html'
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            localStorage.removeItem(USER_STORAGE_KEY);
+
+            const form = document.getElementById('staffLoginForm');
+            const messageBox = document.getElementById('staffLoginMessage');
+
+            const showMessage = (text, type = 'error') => {
+                if (!messageBox) return;
+                messageBox.textContent = text;
+                messageBox.style.color = type === 'success' ? '#1b5e20' : '#c62828';
+            };
+
+            form?.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const username = document.getElementById('staff-username')?.value.trim();
+                const password = document.getElementById('staff-password')?.value.trim();
+                const role = document.getElementById('staff-role')?.value;
+
+                if (username === STAFF_CREDENTIAL.username && password === STAFF_CREDENTIAL.password) {
+                    const roleConfig = STAFF_ROLE_CONFIG[role];
+                    if (!roleConfig) {
+                        showMessage('กรุณาเลือกประเภทผู้ใช้');
+                        return;
+                    }
+
+                    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({
+                        username: STAFF_CREDENTIAL.username,
+                        displayName: roleConfig.displayName,
+                        role,
+                        roleLabel: roleConfig.label
+                    }));
+
+                    showMessage('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', 'success');
+                    setTimeout(() => {
+                        window.location.href = roleConfig.redirect;
+                    }, 400);
+                } else {
+                    showMessage('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

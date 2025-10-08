@@ -1,11 +1,262 @@
 // Navigation JavaScript for KMUTNB Student Management System
 // ไฟล์ JavaScript สำหรับระบบจัดการนักศึกษา มจพ.
 
+const USER_STORAGE_KEY = 'kms_user';
+
+const STAFF_NAV_ITEMS = {
+    staff: [
+        {
+            href: 'staff-student-management.html',
+            icon: '📊',
+            label: 'จัดการข้อมูลนักศึกษา',
+            activeMatches: ['staff-dashboard.html', 'staff-student-details.html']
+        },
+        {
+            href: 'staff-exam-creation.html',
+            icon: '📋',
+            label: 'นักศึกษายื่นหัวข้อ',
+            activeMatches: ['exam-management.html']
+        },
+        {
+            href: 'staff-exam-schedule.html',
+            icon: '📄',
+            label: 'คำขอยื่นสอบ',
+            activeMatches: ['finalExam-management.html']
+        },
+        {
+            href: 'staff-document-management.html',
+            icon: '📁',
+            label: 'เอกสารโปรเจค',
+            activeMatches: ['project-documents.html', 'project-documents-backup.html']
+        }
+    ],
+    advisor: [
+        {
+            href: 'staff-student-management.html',
+            icon: '📊',
+            label: 'จัดการข้อมูลนักศึกษา',
+            activeMatches: ['staff-dashboard.html', 'staff-student-details.html']
+        },
+        {
+            href: 'staff-progress-reports.html',
+            icon: '📈',
+            label: 'รายงานความก้าวหน้า',
+            activeMatches: ['project-reports.html']
+        },
+        {
+            href: 'staff-exam-scoring.html',
+            icon: '📝',
+            label: 'คะแนนสอบ',
+            activeMatches: ['assessment.html', 'grading.html']
+        },
+        {
+            href: 'staff-grade-approval.html',
+            icon: '📝',
+            label: 'ลงนาม'
+        },
+        {
+            href: 'staff-document-management.html',
+            icon: '📁',
+            label: 'เอกสารโปรเจค',
+            activeMatches: ['project-documents.html', 'project-documents-backup.html']
+        }
+    ],
+    instructor: [
+        {
+            href: 'staff-progress-reports.html',
+            icon: '📈',
+            label: 'รายงานความก้าวหน้า',
+            activeMatches: ['project-reports.html']
+        },
+        {
+            href: 'staff-exam-scoring.html',
+            icon: '📝',
+            label: 'คะแนนสอบ',
+            activeMatches: ['assessment.html', 'grading.html']
+        },
+        {
+            href: 'staff-grade-approval.html',
+            icon: '📝',
+            label: 'ลงนาม'
+        },
+        {
+            href: 'staff-document-management.html',
+            icon: '📁',
+            label: 'เอกสารโปรเจค',
+            activeMatches: ['project-documents.html', 'project-documents-backup.html']
+        }
+    ]
+};
+
+const ROLE_LABELS = {
+    staff: 'บุคลากร',
+    advisor: 'ครูที่ปรึกษา',
+    instructor: 'ครูประจำวิชา',
+    student: 'นักศึกษา'
+};
+
 document.addEventListener('DOMContentLoaded', function() {
+    applyUserContext();
     initializeNavigation();
     initializeSearch();
     initializePagination();
 });
+
+function getStoredUser() {
+    const raw = localStorage.getItem(USER_STORAGE_KEY);
+    if (!raw) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(raw);
+    } catch (error) {
+        console.warn('ไม่สามารถอ่านข้อมูลผู้ใช้จาก localStorage ได้', error);
+        return null;
+    }
+}
+
+function applyUserContext() {
+    const navbars = document.querySelectorAll('nav.navbar[data-nav-type]');
+    if (!navbars.length) {
+        return;
+    }
+
+    const storedUser = getStoredUser();
+    let redirectTarget = null;
+
+    navbars.forEach(navbar => {
+        if (redirectTarget) {
+            return;
+        }
+
+        const navType = navbar.dataset.navType;
+
+        if (navType === 'staff') {
+            if (!storedUser || !STAFF_NAV_ITEMS[storedUser.role]) {
+                redirectTarget = 'staff-login.html';
+                return;
+            }
+            const { hasActive, firstHref } = buildStaffNavigation(navbar, storedUser);
+
+            if (!redirectTarget && firstHref && !hasActive) {
+                redirectTarget = firstHref;
+            }
+        } else if (navType === 'student') {
+            if (!storedUser || storedUser.role !== 'student') {
+                redirectTarget = 'student-login.html';
+                return;
+            }
+            populateUserInfo(navbar, storedUser);
+            attachLogoutHandler(navbar);
+        }
+    });
+
+    if (redirectTarget) {
+        window.location.href = redirectTarget;
+    }
+}
+
+function buildStaffNavigation(navbar, user) {
+    const navMenu = navbar.querySelector('.nav-menu');
+    if (!navMenu) {
+        return { hasActive: false, firstHref: null };
+    }
+
+    const navItems = STAFF_NAV_ITEMS[user?.role] || [];
+    const currentPage = getCurrentPage();
+
+    navMenu.innerHTML = '';
+
+    let hasActive = false;
+    let firstHref = null;
+
+    navItems.forEach(item => {
+        const link = document.createElement('a');
+        link.href = item.href;
+        link.className = 'nav-link';
+        link.innerHTML = `<span class="nav-icon">${item.icon}</span>${item.label}`;
+
+        if (!firstHref && item.href) {
+            firstHref = item.href;
+        }
+
+        if (isActiveNavLink(item, currentPage)) {
+            link.classList.add('active');
+            hasActive = true;
+        }
+
+        navMenu.appendChild(link);
+    });
+
+    populateUserInfo(navbar, user);
+    attachLogoutHandler(navbar);
+
+    return { hasActive, firstHref };
+}
+
+function populateUserInfo(navbar, user) {
+    const userNameEl = navbar.querySelector('[data-user-name]');
+    const userRoleEl = navbar.querySelector('[data-user-role]');
+
+    if (userNameEl) {
+        userNameEl.textContent = user?.displayName || user?.username || 'ผู้ใช้งาน';
+    }
+
+    if (userRoleEl) {
+        const roleKey = user?.role;
+        userRoleEl.textContent = user?.roleLabel || ROLE_LABELS[roleKey] || '';
+    }
+}
+
+function attachLogoutHandler(navbar) {
+    const logoutLink = navbar.querySelector('[data-logout]');
+    if (!logoutLink) {
+        return;
+    }
+
+    logoutLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        localStorage.removeItem(USER_STORAGE_KEY);
+        window.location.href = 'user-selection.html';
+    });
+}
+
+function getCurrentPage() {
+    const path = window.location.pathname;
+    const segments = path.split('/');
+    return segments[segments.length - 1] || 'index.html';
+}
+
+function isActiveNavLink(item, currentPage) {
+    if (!item) {
+        return false;
+    }
+
+    if (matchesPath(item.href, currentPage)) {
+        return true;
+    }
+
+    if (Array.isArray(item.activeMatches)) {
+        return item.activeMatches.some(match => matchesPath(match, currentPage));
+    }
+
+    return false;
+}
+
+function matchesPath(targetHref, currentPage) {
+    if (!targetHref) {
+        return false;
+    }
+
+    if (targetHref === currentPage) {
+        return true;
+    }
+
+    return window.location.pathname.endsWith(`/${targetHref}`);
+
+    return window.location.pathname.endsWith(`/${targetHref}`);
+}
 
 // Mobile menu toggle functionality
 function initializeNavigation() {

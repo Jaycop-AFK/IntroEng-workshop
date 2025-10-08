@@ -139,6 +139,12 @@
             margin-top: 30px;
         }
         
+        .form-message {
+            margin-top: 15px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
         .login-btn {
             background: linear-gradient(135deg, #9370db 0%, #ba68c8 50%, #ce93d8 100%);
             color: white;
@@ -274,23 +280,71 @@
             <h1>🎓 ล็อกอินนักศึกษา</h1>
             <h2>เข้าสู่ระบบจัดการโปรเจค</h2>
             
-            <form>
+            <form id="studentLoginForm" novalidate>
                 <div class="form-group">
                     <label for="username">รหัสนักศึกษา</label>
-                    <input type="text" id="username" name="username" placeholder="กรอกรหัสนักศึกษา">
+                    <input type="text" id="username" name="username" placeholder="กรอกรหัสนักศึกษา" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="password">รหัสผ่าน</label>
-                    <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่าน">
+                    <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่าน" required>
                 </div>
                 
                 <div class="button-group">
-                    <a href="student-personal-info.html" class="login-btn">เข้าสู่ระบบ</a>
+                    <button type="submit" class="login-btn">เข้าสู่ระบบ</button>
                     <button type="button" class="forgot-btn">ลืมรหัสผ่าน?</button>
                 </div>
+
+                <div class="form-message" id="studentLoginMessage" aria-live="polite"></div>
             </form>
         </div>
     </div>
+    <script>
+        const USER_STORAGE_KEY = 'kms_user';
+        const STUDENT_CREDENTIAL = {
+            username: '6806022510602',
+            password: '1234',
+            displayName: 'นักศึกษา 6806022510602',
+            role: 'student',
+            roleLabel: 'นักศึกษา',
+            redirect: 'student-personal-info.html'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            localStorage.removeItem(USER_STORAGE_KEY);
+
+            const form = document.getElementById('studentLoginForm');
+            const messageBox = document.getElementById('studentLoginMessage');
+
+            const showMessage = (text, type = 'error') => {
+                if (!messageBox) return;
+                messageBox.textContent = text;
+                messageBox.style.color = type === 'success' ? '#1b5e20' : '#c62828';
+            };
+
+            form?.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const username = document.getElementById('username')?.value.trim();
+                const password = document.getElementById('password')?.value.trim();
+
+                if (username === STUDENT_CREDENTIAL.username && password === STUDENT_CREDENTIAL.password) {
+                    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({
+                        username: STUDENT_CREDENTIAL.username,
+                        displayName: STUDENT_CREDENTIAL.displayName,
+                        role: STUDENT_CREDENTIAL.role,
+                        roleLabel: STUDENT_CREDENTIAL.roleLabel
+                    }));
+
+                    showMessage('เข้าสู่ระบบสำเร็จ กำลังนำทาง...', 'success');
+                    setTimeout(() => {
+                        window.location.href = STUDENT_CREDENTIAL.redirect;
+                    }, 400);
+                } else {
+                    showMessage('รหัสนักศึกษาหรือรหัสผ่านไม่ถูกต้อง');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
